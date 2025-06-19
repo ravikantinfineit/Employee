@@ -40,15 +40,15 @@ const Sidebar = () => {
         </button>
       </div>
       <nav className="flex flex-col gap-2">
-        <NavLink to="/employees" className={linkClass}>
+        <NavLink to="/dashboard/employees" className={linkClass}>
           <Icons.Users className="mr-3" size={18} />
           {!isCollapsed && "Employees"}
         </NavLink>
-        <NavLink to="/invoices" className={linkClass}>
+        <NavLink to="/dashboard/invoices" className={linkClass}>
           <Icons.Invoice className="mr-3" size={18} />
           {!isCollapsed && "Invoices"}
         </NavLink>
-        <NavLink to="/payslips" className={linkClass}>
+        <NavLink to="/dashboard/payslips" className={linkClass}>
           <Icons.Money className="mr-3" size={18} />
           {!isCollapsed && "Payslips"}
         </NavLink>
