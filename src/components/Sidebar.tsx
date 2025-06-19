@@ -1,13 +1,24 @@
-import React from "react";
+import { NavLink } from "react-router-dom";
 
-const Sidebar: React.FC = () => {
+const Sidebar = () => {
+  const linkClass = ({ isActive }: { isActive: boolean }) =>
+    `px-3 py-2 rounded ${
+      isActive ? "bg-gray-700 font-semibold" : "hover:bg-gray-700"
+    }`;
+
   return (
-    <div className="h-screen bg-gray-800 text-white w-64 flex flex-col p-4">
+    <div className="h-screen w-64 bg-gray-800 text-white p-4">
       <h2 className="text-2xl font-bold mb-6">Admin Panel</h2>
       <nav className="flex flex-col gap-4">
-        <a href="#" className="hover:bg-gray-700 px-3 py-2 rounded">Employees</a>
-        <a href="#" className="hover:bg-gray-700 px-3 py-2 rounded">Invoices</a>
-        <a href="#" className="hover:bg-gray-700 px-3 py-2 rounded">Payslips</a>
+        <NavLink to="/employees" className={linkClass}>
+          Employees
+        </NavLink>
+        <NavLink to="/invoices" className={linkClass}>
+          Invoices
+        </NavLink>
+        <NavLink to="/payslips" className={linkClass}>
+          Payslips
+        </NavLink>
       </nav>
     </div>
   );

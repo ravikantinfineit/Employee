@@ -41,7 +41,7 @@ export const EmployeeForm: React.FC<{
           : 1;
 
       const newEmployee: Employee = {
-        id: String(nextId),
+        id: nextId,
         ...employee,
       };
       updatedList = [...employees, newEmployee];

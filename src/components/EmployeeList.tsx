@@ -12,7 +12,7 @@ export const EmployeeList: React.FC<{
     setEmployees(getEmployees());
   }, [refresh]);
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id: number) => {
     const confirm = window.confirm("Are you sure you want to delete?");
     if (!confirm) return;
     const updated = employees.filter((e) => e.id !== id);

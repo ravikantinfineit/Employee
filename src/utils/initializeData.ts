@@ -5,6 +5,6 @@ import { getEmployees, saveEmployees } from "./storage";
 export const initializeEmployeeData = () => {
   const employees = getEmployees();
   if (employees.length === 0) {
-    saveEmployees(data as unknown as Employee[]);
+    saveEmployees(data as Employee[]);
   }
 };

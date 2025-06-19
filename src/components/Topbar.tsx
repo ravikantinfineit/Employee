@@ -1,6 +1,4 @@
-import React from "react";
-
-const Topbar: React.FC = () => {
+const Topbar = () => {
   return (
     <div className="bg-white shadow px-6 py-4 flex justify-between items-center">
       <h1 className="text-xl font-semibold">Employee Management</h1>
