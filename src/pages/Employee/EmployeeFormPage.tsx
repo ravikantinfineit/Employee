@@ -16,43 +16,63 @@ export const employeeFields: FieldConfig[] = [
   { name: "salary", label: "Salary", type: "number", required: true },
 ];
 
-const EmployeeFormPage: React.FC = () => {
-  const navigate = useNavigate();
+interface Props {
+  initialValues?: Partial<Employee>;
+  onClose?: () => void;
+  onSuccess?: (emp: Employee) => void;
+}
+
+const EmployeeFormPage: React.FC<Props> = ({
+  initialValues = {},
+  onClose,
+  onSuccess,
+}) => {
   const { id } = useParams();
-  const [initialValues, setInitialValues] = useState({});
+  const navigate = useNavigate();
+
+  const [formValues, setFormValues] = useState<Partial<Employee>>(initialValues);
   const [loading, setLoading] = useState(!!id);
-  const isEdit = Boolean(id);
+
+  const isEditFromRoute = !!id && !initialValues?.id;
 
   useEffect(() => {
-    if (isEdit) {
+    if (isEditFromRoute) {
       getEmployee(Number(id)).then((data) => {
-        if (data) setInitialValues(data);
+        if (data) setFormValues(data);
         setLoading(false);
       });
+    } else {
+      setFormValues(initialValues);
+      setLoading(false);
     }
-  }, [id, isEdit]);
+  }, [id, initialValues, isEditFromRoute]);
 
-  const handleSubmit = (formData: Record<string, any>) => {
+  const handleSubmit = async (formData: Record<string, any>) => {
     const employeeData = formData as Omit<Employee, "id">;
-    const submit = async () => {
-      if (isEdit) {
-        await updateEmployee(Number(id), employeeData);
-      } else {
-        await createEmployee(employeeData);
-      }
-      navigate("/dashboard/employees");
-    };
-    submit();
+
+    if (id) {
+      await updateEmployee(Number(id), employeeData);
+    } else if (initialValues?.id) {
+      await updateEmployee(initialValues.id, employeeData);
+    } else {
+      const newEmp = await createEmployee(employeeData);
+      onSuccess?.(newEmp);
+    }
+     setLoading(false);
+    onClose?.();
+    if (!onClose) navigate("/dashboard/employees");
   };
 
   if (loading) return <div className="text-center p-6">Loading...</div>;
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow">
-      <h2 className="text-xl font-bold mb-4">{isEdit ? "Edit" : "Add"} Employee</h2>
+    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded">
+      <h2 className="text-xl font-bold mb-4">
+        {(id || initialValues?.id) ? "Edit" : "Add"} Employee
+      </h2>
       <DynamicForm
         fields={employeeFields}
-        initialValues={initialValues}
+        initialValues={formValues}
         onSubmit={handleSubmit}
       />
     </div>

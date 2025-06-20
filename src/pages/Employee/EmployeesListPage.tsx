@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Employee } from "../../types/Employee";
-import { getEmployees, deleteEmployee } from "./EmployeeApi"; // <-- your mock API
+import { getEmployees, deleteEmployee } from "./EmployeeApi";
 import DynamicTable from "../../components/DynamicTable";
 import { FieldConfig } from "../../types/FieldConfig";
+import Modal from "../../components/Modal";
+import EmployeeFormPage from "./EmployeeFormPage";
 
 const employeeFields: FieldConfig[] = [
   { name: "name", label: "Name", type: "text", required: true },
@@ -14,9 +15,9 @@ const employeeFields: FieldConfig[] = [
 
 const EmployeesListPage: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
 
-  // ✅ Load data from your mock API
   useEffect(() => {
     loadEmployees();
   }, []);
@@ -27,15 +28,25 @@ const EmployeesListPage: React.FC = () => {
   };
 
   const handleDelete = async (id: number) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this employee?");
-    if (!confirmDelete) return;
-
-    await deleteEmployee(id);
-    loadEmployees(); // Refresh list
+    if (window.confirm("Are you sure you want to delete this employee?")) {
+      await deleteEmployee(id);
+      loadEmployees();
+    }
   };
 
   const handleEdit = (row: Record<string, any>) => {
-    navigate(`/dashboard/employees/edit/${row.id}`);
+    setEditingEmployee(row as Employee);
+    setModalOpen(true);
+  };
+
+  const handleAdd = () => {
+    setEditingEmployee(null);
+    setModalOpen(true);
+  };
+
+  const handleFormSubmit = async () => {
+    setModalOpen(false);
+    await loadEmployees();
   };
 
   return (
@@ -43,7 +54,7 @@ const EmployeesListPage: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Employee List</h2>
         <button
-          onClick={() => navigate("/dashboard/employees/add")}
+          onClick={handleAdd}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
         >
           + Add Employee
@@ -51,11 +62,22 @@ const EmployeesListPage: React.FC = () => {
       </div>
 
       <DynamicTable
-        columns={employeeFields.map(field => field.name)}
+        columns={employeeFields.map((field) => field.name)}
         data={employees}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
+
+      {modalOpen && (
+        <Modal onClose={() => setModalOpen(false)}>
+          <EmployeeFormPage
+            key={editingEmployee?.id || "new"}
+            initialValues={editingEmployee || {}}
+            onClose={() => setModalOpen(false)}
+            onSuccess={handleFormSubmit}
+          />
+        </Modal>
+      )}
     </div>
   );
 };
