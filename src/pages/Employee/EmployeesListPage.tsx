@@ -35,7 +35,7 @@ const EmployeesListPage: React.FC = () => {
   };
 
   const handleEdit = (row: Record<string, any>) => {
-    navigate(`/employees/edit/${row.id}`);
+    navigate(`/dashboard/employees/edit/${row.id}`);
   };
 
   return (
@@ -43,7 +43,7 @@ const EmployeesListPage: React.FC = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Employee List</h2>
         <button
-          onClick={() => navigate("/employees/add")}
+          onClick={() => navigate("/dashboard/employees/add")}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
         >
           + Add Employee

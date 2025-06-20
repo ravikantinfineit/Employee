@@ -40,7 +40,7 @@ const EmployeeFormPage: React.FC = () => {
       } else {
         await createEmployee(employeeData);
       }
-      navigate("/employees");
+      navigate("/dashboard/employees");
     };
     submit();
   };
