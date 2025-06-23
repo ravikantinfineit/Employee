@@ -1,0 +1,38 @@
+{
+  "Employees": [
+    {
+      "first_name": "John ravi1",
+      "last_name": "Doe1",
+      "date_of_birth": "1990-01-01",
+      "date_of_joining": "2015-06-15",
+      "address": "123 Main St, Springfield, USA",
+      "email": "john.doe@example.com",
+      "phone": "555-1234",
+      "position": "Software Engineer",
+      "department": "Engineering",
+      "salary": 75000,
+      "id": "90d9"
+    },
+    {
+      "first_name": "ravi1",
+      "last_name": "kant",
+      "date_of_birth": "2025-06-17",
+      "date_of_joining": "2025-06-26",
+      "address": "123 Main St, Springfield, USA",
+      "email": "john@example.com",
+      "phone": "555-1234",
+      "position": "Manager1",
+      "department": "Engineering",
+      "salary": "56",
+      "id": "09c3"
+    }
+  ],
+  "units": [
+    {
+      "unit_id": "U001",
+      "unit_code": "M2",
+      "description": "Merter Square",
+      "id": "6536"
+    }
+  ]
+}

@@ -4,7 +4,7 @@ interface Props {
   columns: string[];
   data: Record<string, any>[];
   onEdit?: (item: Record<string, any>) => void;
-  onDelete?: (id: number) => void;
+  onDelete?: (id: string) => void;
   rowsPerPage?: number;
 }
 

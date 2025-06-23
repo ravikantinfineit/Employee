@@ -2,34 +2,29 @@ import React, { useEffect, useState } from "react";
 import { Employee } from "../../types/Employee";
 import { getEmployees, deleteEmployee } from "./EmployeeApi";
 import DynamicTable from "../../components/DynamicTable";
-import { FieldConfig } from "../../types/FieldConfig";
 import Modal from "../../components/Modal";
 import EmployeeFormPage from "./EmployeeFormPage";
-
-const employeeFields: FieldConfig[] = [
-  { name: "name", label: "Name", type: "text", required: true },
-  { name: "email", label: "Email", type: "email", required: true },
-  { name: "position", label: "Position", type: "text", required: true },
-  { name: "salary", label: "Salary", type: "number", required: true },
-];
+import { employeeFields } from "../../types/Employee";
+import { useLocation } from "react-router-dom";
 
 const EmployeesListPage: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
-
+  const location = useLocation();
+  console.log("EmployeesListPage location state:", location);
   useEffect(() => {
     loadEmployees();
-  }, []);
+  }, [location.state]);
 
   const loadEmployees = async () => {
     const data = await getEmployees();
     setEmployees(data);
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (employee_id: string) => {
     if (window.confirm("Are you sure you want to delete this employee?")) {
-      await deleteEmployee(id);
+      await deleteEmployee(employee_id);
       loadEmployees();
     }
   };
@@ -71,7 +66,7 @@ const EmployeesListPage: React.FC = () => {
       {modalOpen && (
         <Modal onClose={() => setModalOpen(false)}>
           <EmployeeFormPage
-            key={editingEmployee?.id || "new"}
+            key={editingEmployee?.employee_id || "new"}
             initialValues={editingEmployee || {}}
             onClose={() => setModalOpen(false)}
             onSuccess={handleFormSubmit}

@@ -11,7 +11,7 @@ export const saveEmployees = (employees: Employee[]) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(employees));
 };
 
-export const deleteEmployee = (id: number) => {
-  const updated = getEmployees().filter(emp => emp.id !== id);
+export const deleteEmployee = (employee_id: string) => {
+  const updated = getEmployees().filter(emp => emp.employee_id !== employee_id);
   saveEmployees(updated);
 };

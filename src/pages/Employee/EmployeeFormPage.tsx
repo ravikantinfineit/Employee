@@ -1,20 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DynamicForm from "../../components/DynamicForm";
-import {
-  getEmployee,
-  createEmployee,
-  updateEmployee,
-  Employee,
-} from "./EmployeeApi";
-import { FieldConfig } from "../../types/FieldConfig";
-
-export const employeeFields: FieldConfig[] = [
-  { name: "name", label: "Name", type: "text", required: true },
-  { name: "email", label: "Email", type: "email", required: true },
-  { name: "position", label: "Position", type: "text", required: true },
-  { name: "salary", label: "Salary", type: "number", required: true },
-];
+import { getEmployee, createEmployee, updateEmployee } from "./EmployeeApi";
+import { employeeFields, Employee } from "../../types/Employee";
 
 interface Props {
   initialValues?: Partial<Employee>;
@@ -27,17 +15,17 @@ const EmployeeFormPage: React.FC<Props> = ({
   onClose,
   onSuccess,
 }) => {
-  const { id } = useParams();
+  const { employee_id } = useParams<{ employee_id: string }>();
   const navigate = useNavigate();
 
-  const [formValues, setFormValues] = useState<Partial<Employee>>(initialValues);
-  const [loading, setLoading] = useState(!!id);
-
-  const isEditFromRoute = !!id && !initialValues?.id;
+  const [formValues, setFormValues] =
+    useState<Partial<Employee>>(initialValues);
+  const [loading, setLoading] = useState(!!employee_id);
+  const isEditFromRoute = !!employee_id && !initialValues?.employee_id;
 
   useEffect(() => {
     if (isEditFromRoute) {
-      getEmployee(Number(id)).then((data) => {
+      getEmployee(employee_id).then((data) => {
         if (data) setFormValues(data);
         setLoading(false);
       });
@@ -45,22 +33,27 @@ const EmployeeFormPage: React.FC<Props> = ({
       setFormValues(initialValues);
       setLoading(false);
     }
-  }, [id, initialValues, isEditFromRoute]);
+  }, [employee_id, initialValues, isEditFromRoute]);
 
   const handleSubmit = async (formData: Record<string, any>) => {
-    const employeeData = formData as Omit<Employee, "id">;
+    const employeeData = formData as Omit<Employee, "employee_id">;
 
-    if (id) {
-      await updateEmployee(Number(id), employeeData);
+    if (employee_id) {
+      await updateEmployee(employee_id, employeeData);
     } else if (initialValues?.id) {
-      await updateEmployee(initialValues.id, employeeData);
+      await updateEmployee(initialValues.id as string, employeeData);
     } else {
       const newEmp = await createEmployee(employeeData);
-      onSuccess?.(newEmp);
+      onSuccess?.(newEmp.data);
     }
-     setLoading(false);
+    debugger;
     onClose?.();
-    if (!onClose) navigate("/dashboard/employees");
+    if (onClose) {
+      navigate("/dashboard/employees", {
+        replace: true,
+        state: { refresh: true },
+      });
+    }
   };
 
   if (loading) return <div className="text-center p-6">Loading...</div>;
@@ -68,7 +61,7 @@ const EmployeeFormPage: React.FC<Props> = ({
   return (
     <div className="max-w-xl mx-auto p-6 bg-white shadow rounded">
       <h2 className="text-xl font-bold mb-4">
-        {(id || initialValues?.id) ? "Edit" : "Add"} Employee
+        {employee_id || initialValues?.employee_id ? "Edit" : "Add"} Employee
       </h2>
       <DynamicForm
         fields={employeeFields}
