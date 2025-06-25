@@ -28,21 +28,23 @@
       "employee_id": "a7b4d4d0-e0d1-4b00-838f-52cdcf4e23cd"
     }
   ],
-  "units": [
+  "Units": [
     {
-      "unit_id": "U001",
+      "name": "Merter Square",
       "unit_code": "M2",
       "description": "Merter Square",
       "id": "6536"
     },
     {
       "unit_id": "U002",
+      "name": "Merter",
       "unit_code": "M",
       "description": "Merter",
       "id": "a1b2"
     },
     {
       "unit_id": "U003",
+      "name": "Nose",
       "unit_code": "nose",
       "description": "Nose",
       "id": "c3d4"

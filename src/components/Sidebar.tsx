@@ -44,9 +44,9 @@ const Sidebar = () => {
           <Icons.Users className="mr-3" size={18} />
           {!isCollapsed && "Employees"}
         </NavLink>
-        <NavLink to="/dashboard/invoices" className={linkClass}>
+        <NavLink to="/dashboard/Units" className={linkClass}>
           <Icons.Invoice className="mr-3" size={18} />
-          {!isCollapsed && "Invoices"}
+          {!isCollapsed && "Units"}
         </NavLink>
         <NavLink to="/dashboard/payslips" className={linkClass}>
           <Icons.Money className="mr-3" size={18} />
