@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Service ,serviceTableColumns} from "./Services";
+import { Service, serviceTableColumns } from "./Services";
 import { getServices, deleteService } from "./ServiceApi";
+import { getUnits } from "../Units/UnitApi";
+import { Unit } from "../Units/Units";
 import DynamicTable from "../../components/DynamicTable";
 import Modal from "../../components/Modal";
 import ServiceFormPage from "./ServiceFormPage";
@@ -8,28 +10,47 @@ import { useLocation } from "react-router-dom";
 
 const ServicesListPage: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
+  const [unitsMap, setUnitsMap] = useState<Record<string, string>>({});
   const [modalOpen, setModalOpen] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
   const location = useLocation();
 
   useEffect(() => {
-    loadServices();
+    loadUnitsAndServices();
   }, [location.state]);
 
-  const loadServices = async () => {
-    const data = await getServices();
-    setServices(data);
+  const loadUnitsAndServices = async () => {
+    const [servicesData, unitsData] = await Promise.all([getServices(), getUnits()]);
+
+    const unitNameMap = unitsData.reduce((acc: Record<string, string>, unit: Unit) => {
+      acc[unit.unit_id] = unit.name;
+      return acc;
+    }, {});
+    setUnitsMap(unitNameMap);
+
+    // Replace unit_id with unit_name for display
+    const enrichedServices = servicesData.map((service) => ({
+      ...service,
+      unit_id: unitNameMap[service.unit_id] || service.unit_id,
+    }));
+    setServices(enrichedServices);
   };
 
   const handleDelete = async (service_id: string) => {
     if (window.confirm("Are you sure you want to delete this service?")) {
       await deleteService(service_id);
-      loadServices();
+      await loadUnitsAndServices();
     }
   };
 
   const handleEdit = (row: Record<string, any>) => {
-    setEditingService(row as Service);
+    // Convert unit name back to unit_id using the map
+    const serviceToEdit = {
+      ...row,
+      unit_id: Object.keys(unitsMap).find((key) => unitsMap[key] === row.unit_id) || row.unit_id,
+    } as Service;
+
+    setEditingService(serviceToEdit);
     setModalOpen(true);
   };
 
@@ -40,7 +61,7 @@ const ServicesListPage: React.FC = () => {
 
   const handleFormSubmit = async () => {
     setModalOpen(false);
-    await loadServices();
+    await loadUnitsAndServices();
   };
 
   return (

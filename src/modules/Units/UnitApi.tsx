@@ -20,7 +20,7 @@ export const createUnit = (data: Omit<Unit, "unit_id">) =>
 
 // Update unit using internal `id` (depends on what json-server uses as primary key)
 export const updateUnit = (id: string, data: Omit<Unit, "unit_id">) =>
-  axios.put(`${API}/${id}`, data); // You must use the json-server's primary key here (usually `id`, not unit_id)
+  axios.patch<Unit>(`${API}/${id}`, data); // You must use the json-server's primary key here (usually `id`, not unit_id)
 
 // Delete unit
 export const deleteUnit = (id: string) =>

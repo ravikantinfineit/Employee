@@ -15,7 +15,7 @@ const DynamicForm: React.FC<Props> = ({ fields, initialValues = {}, onSubmit }) 
     }, {} as Record<string, any>)
   );
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -27,10 +27,7 @@ const DynamicForm: React.FC<Props> = ({ fields, initialValues = {}, onSubmit }) 
 
   const splitFields =
     fields.length > 10
-      ? [
-          fields.slice(0, Math.ceil(fields.length / 2)),
-          fields.slice(Math.ceil(fields.length / 2)),
-        ]
+      ? [fields.slice(0, Math.ceil(fields.length / 2)), fields.slice(Math.ceil(fields.length / 2))]
       : [fields];
 
   return (
@@ -38,18 +35,35 @@ const DynamicForm: React.FC<Props> = ({ fields, initialValues = {}, onSubmit }) 
       <div className={`grid gap-4 ${fields.length > 10 ? "grid-cols-2" : "grid-cols-1"}`}>
         {splitFields.map((columnFields, colIndex) => (
           <div key={colIndex} className="space-y-4">
-            {columnFields.map((field) => (
-              <input
-                key={field.name}
-                type={field.type}
-                name={field.name}
-                placeholder={field.label}
-                required={field.required}
-                value={form[field.name]}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              />
-            ))}
+            {columnFields.map((field) => {
+              return field.type === "select" ? (
+                <select
+                  key={field.name}
+                  name={field.name}
+                  value={form[field.name]}
+                  onChange={handleChange}
+                  required={field.required}
+                  className="w-full p-2 border rounded"
+                >
+                  {field.options?.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  key={field.name}
+                  type={field.type}
+                  name={field.name}
+                  placeholder={field.label}
+                  required={field.required}
+                  value={form[field.name]}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded"
+                />
+              );
+            })}
           </div>
         ))}
       </div>

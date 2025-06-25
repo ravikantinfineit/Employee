@@ -20,7 +20,7 @@ export const createService = (data: Omit<Service, "service_id">) =>
 
 // Update service using internal `id` (depends on what json-server uses as primary key)
 export const updateService = (id: string, data: Omit<Service, "service_id">) =>
-  axios.put(`${API}/${id}`, data); // You must use the json-server's primary key here (usually `id`, not service_id)
+  axios.patch<Service>(`${API}/${id}`, data); // You must use the json-server's primary key here (usually `id`, not service_id)
 
 // Delete service
 export const deleteService = (id: string) =>

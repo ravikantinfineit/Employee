@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DynamicForm from "../../components/DynamicForm";
 import { getService, createService, updateService } from "./ServiceApi";
-import { serviceFields, Service } from "./Services";
+import { serviceFields as baseServiceFields, Service } from "./Services";
+import { getUnits } from "../Units/UnitApi"; // Adjust path to your Units API
+import { Unit } from "../Units/Units"; // Adjust path to your Unit interface
+import { FieldConfig } from "../../types/FieldConfig";
 
 interface Props {
   initialValues?: Partial<Service>;
@@ -19,19 +22,42 @@ const ServiceFormPage: React.FC<Props> = ({
   const navigate = useNavigate();
 
   const [formValues, setFormValues] = useState<Partial<Service>>(initialValues);
+  const [fields, setFields] = useState<FieldConfig[]>(baseServiceFields);
   const [loading, setLoading] = useState(!!service_id);
+
   const isEditFromRoute = !!service_id && !initialValues?.service_id;
 
   useEffect(() => {
-    if (isEditFromRoute) {
-      getService(service_id).then((data) => {
+    const loadForm = async () => {
+      const units = await getUnits();
+
+      const unitOptions = [
+        { label: "Select Unit", value: "" },
+        ...units.map((unit: Unit) => ({
+          label: unit.name,
+          value: unit.unit_id,
+        })),
+      ];
+
+      const updatedFields = baseServiceFields.map((field) =>
+        field.name === "unit_id"
+          ? ({ ...field, type: "select", options: unitOptions } as FieldConfig)
+          : field
+      );
+
+      setFields(updatedFields);
+
+      if (isEditFromRoute) {
+        const data = await getService(service_id);
         if (data) setFormValues(data);
-        setLoading(false);
-      });
-    } else {
-      setFormValues(initialValues);
+      } else {
+        setFormValues(initialValues);
+      }
+
       setLoading(false);
-    }
+    };
+
+    loadForm();
   }, [service_id, initialValues, isEditFromRoute]);
 
   const handleSubmit = async (formData: Record<string, any>) => {
@@ -45,7 +71,7 @@ const ServiceFormPage: React.FC<Props> = ({
       const newService = await createService(serviceData);
       onSuccess?.(newService.data);
     }
-    debugger;
+
     onClose?.();
     if (onClose) {
       navigate("/dashboard/services", {
@@ -63,7 +89,7 @@ const ServiceFormPage: React.FC<Props> = ({
         {service_id || initialValues?.service_id ? "Edit" : "Add"} Service
       </h2>
       <DynamicForm
-        fields={serviceFields}
+        fields={fields}
         initialValues={formValues}
         onSubmit={handleSubmit}
       />

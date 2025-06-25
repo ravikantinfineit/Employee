@@ -1,9 +1,8 @@
-export type FieldType = "text" | "number" | "email" | "date" | "select";
-
+// types/FieldConfig.ts
 export interface FieldConfig {
   name: string;
   label: string;
-  type: FieldType;
+  type: "text" | "email" | "number" | "date" | "select"; // Add more types if needed
   required?: boolean;
-  options?: { value: string; label: string }[]; // only for select
+  options?: { label: string; value: string }[]; // For select fields
 }

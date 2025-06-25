@@ -1,19 +1,6 @@
 {
   "Employees": [
     {
-      "first_name": "John",
-      "last_name": "Doe",
-      "date_of_birth": "1990-01-01",
-      "date_of_joining": "2015-06-15",
-      "address": "123 Main St, Springfield, USA",
-      "email": "john.doe@example.com",
-      "phone": "555-1234",
-      "position": "Software Engineer",
-      "department": "Engineering",
-      "salary": 75000,
-      "id": "90d9"
-    },
-    {
       "id": "bd8b",
       "first_name": "akash",
       "last_name": "Doe",
@@ -26,6 +13,20 @@
       "department": "Engineering",
       "salary": "144",
       "employee_id": "a7b4d4d0-e0d1-4b00-838f-52cdcf4e23cd"
+    },
+    {
+      "id": "e428",
+      "first_name": "John",
+      "last_name": "Doe",
+      "date_of_birth": "2025-06-13",
+      "date_of_joining": "2025-06-14",
+      "address": "123 Main St, Springfield, USA",
+      "email": "john@example.com",
+      "phone": "555-1234",
+      "position": "Manager1",
+      "department": "Engineering",
+      "salary": "564",
+      "employee_id": "b0b674ea-58bc-4704-bf9c-4a163d0fdea6"
     }
   ],
   "Units": [
@@ -50,24 +51,25 @@
       "id": "c3d4"
     },
     {
-      "id": "bda1",
+      "id": "7626",
       "name": "box",
       "unit_code": "BOX",
       "description": "boxes",
-      "unit_id": "59c0864b-280f-4733-825a-cb077ccc9f52"
+      "unit_id": "ca7da5b4-7384-4ec4-b25a-f439302604f8"
     }
   ],
   "Services": [
     {
+      "id": "b3e3",
       "service_name": "Cleaning",
       "service_type": "Office",
       "service_category": "Maintenance",
       "service_code": "C001",
       "service_description": "Regular office cleaning service",
       "description": "Office cleaning service",
-      "unit_id": "U001",
-      "price": 50,
-      "id": "a1b2"
+      "unit_id": "ca7da5b4-7384-4ec4-b25a-f439302604f8",
+      "price": "7569",
+      "service_id": "81c3bf01-50d9-425a-99fd-d3aaf906ff39"
     }
   ]
 }

@@ -22,7 +22,7 @@ export const serviceFields: FieldConfig[] = [
   { name: "service_code", label: "Service Code", type: "text", required: true },
   { name: "service_description", label: "Service Description", type: "text", required: true },
   { name: "description", label: "Description", type: "text", required: true },
-  { name: "unit_id", label: "Unit ID", type: "text", required: true },
+  { name: "unit_id", label: "Unit ID", type: "select", required: true, options: [] },
   { name: "price", label: "Price", type: "number", required: true },
 ];
 

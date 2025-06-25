@@ -20,7 +20,7 @@ export const createEmployee = (data: Omit<Employee, "employee_id">) =>
 
 // Update employee using internal `id` or employee_id (depends on what json-server uses as primary key)
 export const updateEmployee = (id: string, data: Omit<Employee, "employee_id">) =>
-  axios.put(`${API}/${id}`, data); // You must use the json-server's primary key here (usually `id`, not employee_id)
+  axios.patch<Employee>(`${API}/${id}`, data); // You must use the json-server's primary key here (usually `id`, not employee_id)
 
 // Delete employee
 export const deleteEmployee = (id: string) =>
