@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DynamicForm from "../../components/DynamicForm";
 import { getEmployee, createEmployee, updateEmployee } from "./EmployeeApi";
-import { employeeFields, Employee } from "../../types/Employee";
+import { employeeFields, Employee } from "./Employee";
 
 interface Props {
   initialValues?: Partial<Employee>;

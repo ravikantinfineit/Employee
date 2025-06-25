@@ -1,5 +1,5 @@
 import axios from "axios";
-import {Employee} from "../../types/Employee"
+import {Employee} from "./Employee"
 
 
 const API = "http://localhost:4000/Employees"; // Change if needed

@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 
+interface Column {
+  name: string;
+  label: string;
+}
+
 interface Props {
-  columns: string[];
+  columns: Column[];
   data: Record<string, any>[];
   onEdit?: (item: Record<string, any>) => void;
   onDelete?: (id: string) => void;
@@ -13,7 +18,7 @@ const DynamicTable: React.FC<Props> = ({
   data,
   onEdit,
   onDelete,
-  rowsPerPage = 10, // Default to 10 per page
+  rowsPerPage = 10,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -35,8 +40,8 @@ const DynamicTable: React.FC<Props> = ({
         <thead className="bg-gray-100">
           <tr>
             {columns.map((col) => (
-              <th key={col} className="p-2 text-left capitalize">
-                {col}
+              <th key={col.name} className="p-2 text-left capitalize">
+                {col.label}
               </th>
             ))}
             {(onEdit || onDelete) && <th className="p-2">Actions</th>}
@@ -46,8 +51,8 @@ const DynamicTable: React.FC<Props> = ({
           {paginatedData.map((row) => (
             <tr key={row.id} className="border-t hover:bg-gray-50 transition">
               {columns.map((col) => (
-                <td key={col} className="p-2 text-gray-800">
-                  {row[col]}
+                <td key={col.name} className="p-2 text-gray-800">
+                  {row[col.name]}
                 </td>
               ))}
               {(onEdit || onDelete) && (

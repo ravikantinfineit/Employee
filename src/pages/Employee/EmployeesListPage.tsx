@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Employee } from "../../types/Employee";
+import { Employee } from "./Employee";
 import { getEmployees, deleteEmployee } from "./EmployeeApi";
 import DynamicTable from "../../components/DynamicTable";
 import Modal from "../../components/Modal";
 import EmployeeFormPage from "./EmployeeFormPage";
-import { employeeFields } from "../../types/Employee";
+import { employeeTableColumns } from "./Employee";
 import { useLocation } from "react-router-dom";
 
 const EmployeesListPage: React.FC = () => {
@@ -57,7 +57,7 @@ const EmployeesListPage: React.FC = () => {
       </div>
 
       <DynamicTable
-        columns={employeeFields.map((field) => field.name)}
+        columns={employeeTableColumns}
         data={employees}
         onEdit={handleEdit}
         onDelete={handleDelete}

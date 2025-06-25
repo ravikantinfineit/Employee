@@ -1,4 +1,4 @@
-import { FieldConfig } from "./FieldConfig";
+import { FieldConfig } from "../../types/FieldConfig";
 
 export interface Employee {
   id?:string;
@@ -26,4 +26,18 @@ export const employeeFields: FieldConfig[] = [
   { name: "position", label: "Position", type: "text", required: true },
   { name: "department", label: "Department", type: "text", required: true },
   { name: "salary", label: "Salary", type: "number", required: true },
+];
+
+export const employeeTableColumns = [
+ // { name: "employee_id", label: "Employee ID" },
+  { name: "first_name", label: "First Name" },
+  { name: "last_name", label: "Last Name" },
+  { name: "email", label: "Email" },
+  { name: "phone", label: "Phone" },
+  { name: "position", label: "Position" },
+  { name: "department", label: "Department" },
+  { name: "salary", label: "Salary" },
+  { name: "date_of_birth", label: "Date of Birth" },
+  { name: "date_of_joining", label: "Date of Joining" },
+  { name: "address", label: "Address" },
 ];
