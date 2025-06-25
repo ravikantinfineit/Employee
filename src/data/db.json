@@ -48,24 +48,26 @@
       "unit_code": "nose",
       "description": "Nose",
       "id": "c3d4"
+    },
+    {
+      "id": "bda1",
+      "name": "box",
+      "unit_code": "BOX",
+      "description": "boxes",
+      "unit_id": "59c0864b-280f-4733-825a-cb077ccc9f52"
     }
   ],
   "Services": [
     {
-      "service_id": "S001",
       "service_name": "Cleaning",
+      "service_type": "Office",
+      "service_category": "Maintenance",
+      "service_code": "C001",
+      "service_description": "Regular office cleaning service",
       "description": "Office cleaning service",
       "unit_id": "U001",
       "price": 50,
       "id": "a1b2"
-    },
-    {
-      "service_id": "S002",
-      "service_name": "Maintenance",
-      "description": "Office maintenance service",
-      "unit_id": "U001",
-      "price": 100,
-      "id": "c3d4"
     }
   ]
 }
