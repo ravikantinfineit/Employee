@@ -6,7 +6,8 @@ import EmployeesListPage from "./modules/Employee/EmployeesListPage";
 import EmployeeFormPage from "./modules/Employee/EmployeeFormPage";
 import PrivateRoute from "./components/PrivateRoute";
 import UnitsListPage from "./modules/Units/UnitsListPage";
-import ServicesListPage from "./modules/services/ServiceListPage";
+import ServicesListPage from "./modules/Services/ServiceListPage";
+import ClientsListPage from "./modules/Clients/ClientListPage";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="employees/edit/:id" element={<EmployeeFormPage />} />
             <Route path="units" element={<UnitsListPage />} />
             <Route path="services" element={<ServicesListPage />} />
+            <Route path="clients" element={<ClientsListPage />} />
           </Route>
         </Route>
 

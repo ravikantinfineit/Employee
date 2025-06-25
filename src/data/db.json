@@ -71,5 +71,67 @@
       "price": "7569",
       "service_id": "81c3bf01-50d9-425a-99fd-d3aaf906ff39"
     }
+  ],
+  "Clients": [
+    {
+      "client_id": "c9f58b1e-8d91-4baf-a90d-f312e91d3a01",
+      "name": "Acme Corp",
+      "contact_person": "John Doe",
+      "email": "john.doe@acmecorp.com",
+      "phone": "+91-9876543210",
+      "address": "123 Business Street",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "country": "India",
+      "postal_code": "400001",
+      "gst_number": "27AACCA1234A1ZB",
+      "pan_number": "AACCA1234A",
+      "id": "a888"
+    },
+    {
+      "client_id": "4e218b1b-b648-4d7f-a62b-e452becefa64",
+      "name": "GlobalTech Solutions",
+      "contact_person": "Priya Sharma",
+      "email": "priya@globaltech.com",
+      "phone": "+91-9823456789",
+      "address": "456 IT Park Road",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "country": "India",
+      "postal_code": "560001",
+      "gst_number": "29BGHPS1234L1Z1",
+      "pan_number": "BGHPS1234L",
+      "id": "eeed"
+    },
+    {
+      "client_id": "f2a1cc57-4294-46ce-b5ce-119d8c7f0123",
+      "name": "Zenith Innovations",
+      "contact_person": "Amit Verma",
+      "email": "amit@zenithinnov.com",
+      "phone": "+91-9898989898",
+      "address": "789 Startup Avenue",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "country": "India",
+      "postal_code": "500081",
+      "gst_number": "36ABCDE1234F1Z9",
+      "pan_number": "ABCDE1234F",
+      "id": "5c79"
+    },
+    {
+      "client_id": "d83ea2d2-cda0-41fc-9f8f-e8bc325b40e4",
+      "name": "BrightFuture Pvt Ltd",
+      "contact_person": "Neha Kapoor",
+      "email": "neha@brightfuture.com",
+      "phone": "+91-9811122233",
+      "address": "321 Industrial Area",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "country": "India",
+      "postal_code": "411001",
+      "gst_number": "27FGHIJ5678K1Z2",
+      "pan_number": "FGHIJ5678K",
+      "id": "ac10"
+    }
   ]
 }
