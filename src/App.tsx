@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-import LoginPage from "./pages/LoginPage";
-import Dashboard from "./pages/Dashboard";
-import EmployeesListPage from "./pages/Employee/EmployeesListPage";
-import EmployeeFormPage from "./pages/Employee/EmployeeFormPage";
+import LandingPage from "./modules/LandingPage";
+import LoginPage from "./modules/LoginPage";
+import Dashboard from "./modules/Dashboard";
+import EmployeesListPage from "./modules/Employee/EmployeesListPage";
+import EmployeeFormPage from "./modules/Employee/EmployeeFormPage";
 import PrivateRoute from "./components/PrivateRoute";
 
 const App = () => {

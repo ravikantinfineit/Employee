@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import LoginForm from "../pages/LoginPage";
+import LoginForm from "./LoginPage";
 
 const LandingPage = () => {
   const location = useLocation();

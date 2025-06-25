@@ -1,4 +1,4 @@
-import { Employee } from "../pages/Employee/Employee";
+import { Employee } from "../modules/Employee/Employee";
 
 const STORAGE_KEY = "employees_data";
 

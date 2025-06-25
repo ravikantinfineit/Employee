@@ -34,6 +34,36 @@
       "unit_code": "M2",
       "description": "Merter Square",
       "id": "6536"
+    },
+    {
+      "unit_id": "U002",
+      "unit_code": "M",
+      "description": "Merter",
+      "id": "a1b2"
+    },
+    {
+      "unit_id": "U003",
+      "unit_code": "nose",
+      "description": "Nose",
+      "id": "c3d4"
+    }
+  ],
+  "Services": [
+    {
+      "service_id": "S001",
+      "service_name": "Cleaning",
+      "description": "Office cleaning service",
+      "unit_id": "U001",
+      "price": 50,
+      "id": "a1b2"
+    },
+    {
+      "service_id": "S002",
+      "service_name": "Maintenance",
+      "description": "Office maintenance service",
+      "unit_id": "U001",
+      "price": 100,
+      "id": "c3d4"
     }
   ]
 }
