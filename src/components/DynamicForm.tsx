@@ -10,7 +10,7 @@ interface Props {
 const DynamicForm: React.FC<Props> = ({ fields, initialValues = {}, onSubmit }) => {
   const [form, setForm] = useState<Record<string, any>>(
     fields.reduce((acc, field) => {
-      acc[field.name] = initialValues[field.name] || "";
+      acc[field.name] = initialValues[field.name] ?? field.defaultValue ?? "";
       return acc;
     }, {} as Record<string, any>)
   );

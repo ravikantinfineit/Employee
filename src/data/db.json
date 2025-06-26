@@ -133,5 +133,22 @@
       "pan_number": "FGHIJ5678K",
       "id": "ac10"
     }
+  ],
+  "Invoices": [
+    {
+      "id": "b72e",
+      "invoice_sight": "location",
+      "client_id": "4e218b1b-b648-4d7f-a62b-e452becefa64",
+      "invoice_date": "2025-06-12",
+      "due_date": "2025-06-10",
+      "billing_address": "sdas",
+      "shipping_address": "asd",
+      "subtotal": "15",
+      "tax": "10",
+      "total": "25",
+      "status": "UNPAID",
+      "notes": "asdas",
+      "invoice_id": "cf459748-d216-4842-acf1-763a28912168"
+    }
   ]
 }

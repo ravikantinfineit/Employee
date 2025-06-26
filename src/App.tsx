@@ -8,6 +8,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import UnitsListPage from "./modules/Units/UnitsListPage";
 import ServicesListPage from "./modules/Services/ServiceListPage";
 import ClientsListPage from "./modules/Clients/ClientListPage";
+import InvoicesListPage from "./modules/invoice/InvoiceListPage";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
             <Route path="units" element={<UnitsListPage />} />
             <Route path="services" element={<ServicesListPage />} />
             <Route path="clients" element={<ClientsListPage />} />
+            <Route path="invoices" element={<InvoicesListPage />} />
           </Route>
         </Route>
 
