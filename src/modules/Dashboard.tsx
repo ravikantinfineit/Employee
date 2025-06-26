@@ -9,7 +9,7 @@ const Dashboard = () => {
       <Sidebar />
       <div className="flex flex-col flex-grow">
         <Topbar />
-        <main className="p-6 bg-gray-50 h-full overflow-y-auto">
+        <main className="p-6 bg-gray-200 h-full overflow-y-auto">
           <Outlet />
         </main>
         <Footer />
