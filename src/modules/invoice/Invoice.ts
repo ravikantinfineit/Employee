@@ -27,7 +27,18 @@ export const invoiceFields: FieldConfig[] = [
   { name: "shipping_address", label: "Shipping Address", type: "text", required: false },
   { name: "subtotal", label: "Subtotal", type: "number", required: true },
   { name: "tax", label: "Tax", type: "number", required: true,defaultValue: 0  },
-  { name: "total", label: "Total", type: "number", required: true },
+  {
+    name: "total",
+    label: "Total",
+    type: "number",
+    required: true,
+    disabled: true, // read-only in the form
+    computeValue: (form: Record<string, any>) => {
+      const subtotal = parseFloat(form.subtotal) || 0;
+      const tax = parseFloat(form.tax) || 0;
+      return subtotal + tax;
+    },
+  },
   {
     name: "status",
     label: "Status",

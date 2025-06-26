@@ -149,6 +149,21 @@
       "status": "UNPAID",
       "notes": "asdas",
       "invoice_id": "cf459748-d216-4842-acf1-763a28912168"
+    },
+    {
+      "id": "9776",
+      "invoice_sight": "ee",
+      "client_id": "c9f58b1e-8d91-4baf-a90d-f312e91d3a01",
+      "invoice_date": "2025-06-12",
+      "due_date": "2025-07-03",
+      "billing_address": "sdas",
+      "shipping_address": "asd",
+      "subtotal": "754",
+      "tax": "8",
+      "total": 762,
+      "status": "UNPAID",
+      "notes": "gh",
+      "invoice_id": "f75112be-9052-4be2-8c6c-8215406bfd99"
     }
   ]
 }
