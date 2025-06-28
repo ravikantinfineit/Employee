@@ -4,12 +4,17 @@ interface Column {
   name: string;
   label: string;
 }
-
+interface CustomAction {
+  label: string;
+  colorClass?: string; // Optional Tailwind CSS class
+  onClick: (item: Record<string, any>) => void;
+}
 interface Props {
   columns: Column[];
   data: Record<string, any>[];
   onEdit?: (item: Record<string, any>) => void;
   onDelete?: (id: string) => void;
+  customActions?: CustomAction[];
   rowsPerPage?: number;
 }
 
@@ -18,6 +23,7 @@ const DynamicTable: React.FC<Props> = ({
   data,
   onEdit,
   onDelete,
+  customActions,
   rowsPerPage = 10,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,6 +83,24 @@ const DynamicTable: React.FC<Props> = ({
                         Delete
                       </button>
                     )}
+                    {(customActions?.length ?? 0) > 0 && (
+                      <span className="text-gray-400 select-none">|</span>
+                    )}
+                    {customActions?.map((action, index) => (
+                      <React.Fragment key={index}>
+                        <button
+                          onClick={() => action.onClick(row)}
+                          className={`${
+                            action.colorClass || "bg-blue-600"
+                          } text-white px-3 py-1 rounded hover:opacity-90 transition`}
+                        >
+                          {action.label}
+                        </button>
+                        {index < customActions.length - 1 && (
+                          <span className="text-gray-400 select-none">|</span>
+                        )}
+                      </React.Fragment>
+                    ))}
                   </div>
                 </td>
               )}

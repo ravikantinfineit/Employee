@@ -20,12 +20,18 @@ const InvoicesListPage: React.FC = () => {
   }, [location.state]);
 
   const loadClientsAndInvoices = async () => {
-    const [invoicesData, clientsData] = await Promise.all([getInvoices(), getClients()]);
+    const [invoicesData, clientsData] = await Promise.all([
+      getInvoices(),
+      getClients(),
+    ]);
 
-    const clientNameMap = clientsData.reduce((acc: Record<string, string>, client: Client) => {
-      acc[client.client_id] = client.name;
-      return acc;
-    }, {});
+    const clientNameMap = clientsData.reduce(
+      (acc: Record<string, string>, client: Client) => {
+        acc[client.client_id] = client.name;
+        return acc;
+      },
+      {}
+    );
     setClientsMap(clientNameMap);
 
     // Replace client_id with client_name for display
@@ -35,7 +41,6 @@ const InvoicesListPage: React.FC = () => {
     }));
     setInvoices(enrichedInvoices);
   };
-
 
   const handleDelete = async (invoice_id: string) => {
     if (window.confirm("Are you sure you want to delete this invoice?")) {
@@ -48,7 +53,10 @@ const InvoicesListPage: React.FC = () => {
     // Convert unit name back to unit_id using the map
     const invoiceToEdit = {
       ...row,
-      client_id: Object.keys(clientsMap).find((key) => clientsMap[key] === row.client_id) || row.client_id,
+      client_id:
+        Object.keys(clientsMap).find(
+          (key) => clientsMap[key] === row.client_id
+        ) || row.client_id,
     } as Invoice;
 
     setEditingInvoice(invoiceToEdit);
@@ -82,6 +90,18 @@ const InvoicesListPage: React.FC = () => {
         data={invoices}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        customActions={[
+          {
+            label: "View",
+            colorClass: "bg-indigo-500",
+            onClick: (item) => alert(`Viewing ${item.invoice_id}`),
+          },
+          {
+            label: "Download",
+            colorClass: "bg-yellow-500",
+            onClick: (item) => console.log("Download", item),
+          },
+        ]}
       />
 
       {modalOpen && (

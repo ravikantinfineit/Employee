@@ -144,8 +144,8 @@
       "billing_address": "sdas",
       "shipping_address": "asd",
       "subtotal": "15",
-      "tax": "10",
-      "total": "25",
+      "tax": "11",
+      "total": 26,
       "status": "UNPAID",
       "notes": "asdas",
       "invoice_id": "cf459748-d216-4842-acf1-763a28912168"
@@ -164,6 +164,28 @@
       "status": "UNPAID",
       "notes": "gh",
       "invoice_id": "f75112be-9052-4be2-8c6c-8215406bfd99"
+    }
+  ],
+  "Invoice_items": [
+    {
+      "id": "a1b2",
+      "Invoice_item_id": "cf459748-d216-4842-acf1-763a28912167",
+      "invoice_id": "cf459748-d216-4842-acf1-763a28912168",
+      "service_id": "81c3bf01-50d9-425a-99fd-d3aaf906ff39",
+      "description": "Office cleaning service",
+      "quantity": 1,
+      "unit_price": 15,
+      "total_price": 15
+    },
+    {
+      "id": "c3d4",
+      "Invoice_item_id": "f75112be-9052-4be2-8c6c-8215406bfd98",
+      "invoice_id": "f75112be-9052-4be2-8c6c-8215406bfd99",
+      "service_id": "81c3bf01-50d9-425a-99fd-d3aaf906ff39",
+      "description": "Office cleaning service",
+      "quantity": 1,
+      "unit_price": 754,
+      "total_price": 754
     }
   ]
 }
