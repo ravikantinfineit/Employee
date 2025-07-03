@@ -1,10 +1,14 @@
 import { FieldConfig } from "../../types/FieldConfig";
-
+import { Client } from "../Clients/Clients"; // Import clients array from Clients module
 export interface Invoice {
   id?: string; // UUID
   invoice_id: string;
-  invoice_sight: string;
   client_id: string;
+  invoice_sight: string;
+  client: {
+    client_id: string;
+    name: string;
+  };
   invoice_date: string;
   due_date?: string;
   billing_address: string;
@@ -16,24 +20,58 @@ export interface Invoice {
   notes?: string;
 }
 
+// Adjust the path as needed to where your clients array is defined
 
-export const invoiceFields: FieldConfig[] = [
-  //{ name: "invoice_id", label: "Invoice ID", type: "text", required: true },
-  { name: "invoice_sight", label: "Invoice Sight", type: "text", required: true },
-  { name: "client_id", label: "Client", type: "select", required: true }, // will populate dynamically
+export const invoiceFields = (clients: Client[]): FieldConfig[] => [
+  {
+    name: "invoice_sight",
+    label: "Invoice Sight",
+    type: "text",
+    required: true,
+  },
+
+  {
+    name: "client_id",
+    label: "Client",
+    type: "select",
+    required: true,
+    storeObject: true,
+    valueKey: "client_id",
+    options: clients.map((c) => ({
+      label: c.name,
+      value: c.client_id, // full object
+    })),
+  },
+
   { name: "invoice_date", label: "Invoice Date", type: "date", required: true },
   { name: "due_date", label: "Due Date", type: "date", required: false },
-  { name: "billing_address", label: "Billing Address", type: "text", required: true },
-  { name: "shipping_address", label: "Shipping Address", type: "text", required: false },
+  {
+    name: "billing_address",
+    label: "Billing Address",
+    type: "text",
+    required: true,
+  },
+  {
+    name: "shipping_address",
+    label: "Shipping Address",
+    type: "text",
+    required: false,
+  },
   { name: "subtotal", label: "Subtotal", type: "number", required: true },
-  { name: "tax", label: "Tax", type: "number", required: true,defaultValue: 0  },
+  {
+    name: "tax",
+    label: "Tax",
+    type: "number",
+    required: true,
+    defaultValue: 0,
+  },
   {
     name: "total",
     label: "Total",
     type: "number",
     required: true,
-    disabled: true, // read-only in the form
-    computeValue: (form: Record<string, any>) => {
+    disabled: true,
+    computeValue: (form) => {
       const subtotal = parseFloat(form.subtotal) || 0;
       const tax = parseFloat(form.tax) || 0;
       return subtotal + tax;
@@ -43,20 +81,71 @@ export const invoiceFields: FieldConfig[] = [
     name: "status",
     label: "Status",
     type: "select",
+    required: true,
     options: [
       { label: "Paid", value: "PAID" },
       { label: "Unpaid", value: "UNPAID" },
       { label: "Partially Paid", value: "PARTIALLY_PAID" },
     ],
-    required: true,
   },
   { name: "notes", label: "Notes", type: "text", required: false },
 ];
 
+// export const invoiceFields: FieldConfig[] = [
+//   //{ name: "invoice_id", label: "Invoice ID", type: "text", required: true },
+//   { name: "invoice_sight", label: "Invoice Sight", type: "text", required: true },
+//  {
+//   name: "client",
+//   label: "Client",
+//   type: "select",
+//   required: true,
+//   storeObject: true,
+//   valueKey: "client_id",
+//   options: Client.map((c: { name: any; }) => ({
+//     label: c.name,
+//     value: c, // entire client object
+//   })),
+// },
+//  // will populate dynamically
+//   { name: "invoice_date", label: "Invoice Date", type: "date", required: true },
+//   { name: "due_date", label: "Due Date", type: "date", required: false },
+//   { name: "billing_address", label: "Billing Address", type: "text", required: true },
+//   { name: "shipping_address", label: "Shipping Address", type: "text", required: false },
+//   { name: "subtotal", label: "Subtotal", type: "number", required: true },
+//   { name: "tax", label: "Tax", type: "number", required: true,defaultValue: 0  },
+//   {
+//     name: "total",
+//     label: "Total",
+//     type: "number",
+//     required: true,
+//     disabled: true, // read-only in the form
+//     computeValue: (form: Record<string, any>) => {
+//       const subtotal = parseFloat(form.subtotal) || 0;
+//       const tax = parseFloat(form.tax) || 0;
+//       return subtotal + tax;
+//     },
+//   },
+//   {
+//     name: "status",
+//     label: "Status",
+//     type: "select",
+//     options: [
+//       { label: "Paid", value: "PAID" },
+//       { label: "Unpaid", value: "UNPAID" },
+//       { label: "Partially Paid", value: "PARTIALLY_PAID" },
+//     ],
+//     required: true,
+//   },
+//   { name: "notes", label: "Notes", type: "text", required: false },
+// ];
+
 export const invoiceTableColumns = [
-  //{ name: "invoice_id", label: "Invoice ID" },
   { name: "invoice_sight", label: "Invoice Sight" },
-  { name: "client_id", label: "Client" }, // optional: replace with client name if needed
+  {
+    name: "client",
+    label: "Client",
+    render: (row: any) => row.client?.name || "Unknown", // ✅ Safely access name
+  },
   { name: "invoice_date", label: "Invoice Date" },
   { name: "due_date", label: "Due Date" },
   { name: "subtotal", label: "Subtotal" },
@@ -64,5 +153,3 @@ export const invoiceTableColumns = [
   { name: "total", label: "Total" },
   { name: "status", label: "Status" },
 ];
-
-

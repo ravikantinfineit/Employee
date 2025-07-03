@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DynamicForm from "../../components/DynamicForm";
 import { getInvoice, createInvoice, updateInvoice } from "./InvoiceApi";
-import { invoiceFields, Invoice } from "./Invoice";
-import { getClients } from "../Clients/ClientApi"; // Adjust path to your Units API
-import { Client } from "../Clients/Clients"; // Adjust path to your Unit interface
+import { invoiceFields as baseInvoiceFields, Invoice } from "./Invoice";
+import { getClients } from "../Clients/ClientApi";
+import { Client } from "../Clients/Clients";
 import { FieldConfig } from "../../types/FieldConfig";
 
 interface Props {
@@ -21,40 +21,56 @@ const InvoiceFormPage: React.FC<Props> = ({
   const { invoice_id } = useParams<{ invoice_id: string }>();
   const navigate = useNavigate();
 
-  const [formValues, setFormValues] = useState<Partial<Invoice>>(initialValues);
-  const [fields, setFields] = useState<FieldConfig[]>(invoiceFields);
-  const [loading, setLoading] = useState(!!invoice_id);
+  const [formValues, setFormValues] = useState<Partial<Invoice>>({});
+  const [fields, setFields] = useState<FieldConfig[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const isEditFromRoute = !!invoice_id && !initialValues?.invoice_id;
 
   useEffect(() => {
     const loadForm = async () => {
-      const clients = await getClients();
+      try {
+        const clients = await getClients();
 
-      const clientOptions = [
-        { label: "Select Client", value: "" },
-        ...clients.map((client: Client) => ({
+        const clientOptions = clients.map((client: Client) => ({
           label: client.name,
           value: client.client_id,
-        })),
-      ];
+        }));
 
-      const updatedFields = invoiceFields.map((field) =>
-        field.name === "client_id"
-          ? ({ ...field, type: "select", options: clientOptions } as FieldConfig)
-          : field
-      );
+        const updatedFields = baseInvoiceFields(clients).map((field) =>
+          field.name === "client_id"
+            ? ({
+                ...field,
+                type: "select",
+                options: clientOptions,
+                required: true,
+              } as FieldConfig)
+            : field
+        );
 
-      setFields(updatedFields);
+        setFields(updatedFields);
 
-      if (isEditFromRoute) {
-        const data = await getInvoice(invoice_id);
-        if (data) setFormValues(data);
-      } else {
-        setFormValues(initialValues);
+        // Load invoice data if editing via URL param
+        if (isEditFromRoute) {
+          const data = await getInvoice(invoice_id);
+          if (data) {
+            setFormValues({
+              ...data,
+              client_id: data.client?.client_id ?? data.client_id,
+            });
+          }
+        } else {
+          // Load initialValues passed via props
+          setFormValues({
+            ...initialValues,
+            client_id: initialValues.client?.client_id ?? initialValues.client_id,
+          });
+        }
+      } catch (error) {
+        console.error("Error loading invoice form:", error);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
     loadForm();
@@ -62,22 +78,26 @@ const InvoiceFormPage: React.FC<Props> = ({
 
   const handleSubmit = async (formData: Record<string, any>) => {
     const invoiceData = formData as Omit<Invoice, "invoice_id">;
+console.log("Submitting invoice data:", invoiceData);
+    try {
+      if (invoice_id) {
+        await updateInvoice(invoice_id, invoiceData);
+      } else if (initialValues?.id) {
+        await updateInvoice(initialValues.id, invoiceData);
+      } else {
+        const newInvoice = await createInvoice(invoiceData);
+        onSuccess?.(newInvoice.data);
+      }
 
-    if (invoice_id) {
-      await updateInvoice(invoice_id, invoiceData);
-    } else if (initialValues?.id) {
-      await updateInvoice(initialValues.id as string, invoiceData);
-    } else {
-      const newInvoice = await createInvoice(invoiceData);
-      onSuccess?.(newInvoice.data);
-    }
-
-    onClose?.();
-    if (onClose) {
-      navigate("/dashboard/invoices", {
-        replace: true,
-        state: { refresh: true },
-      });
+      onClose?.();
+      if (onClose) {
+        navigate("/dashboard/invoices", {
+          replace: true,
+          state: { refresh: true },
+        });
+      }
+    } catch (error) {
+      console.error("Failed to submit invoice:", error);
     }
   };
 

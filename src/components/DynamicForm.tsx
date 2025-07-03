@@ -12,14 +12,21 @@ const DynamicForm: React.FC<Props> = ({
   initialValues = {},
   onSubmit,
 }) => {
-  const [form, setForm] = useState<Record<string, any>>(() =>
-    fields.reduce((acc, field) => {
-      acc[field.name] = initialValues[field.name] ?? field.defaultValue ?? "";
-      return acc;
-    }, {} as Record<string, any>)
-  );
+  const [form, setForm] = useState<Record<string, any>>({});
 
-  // 🧠 Auto-compute values if any field uses computeValue
+  // ✅ Set form state on initialValues OR fields update
+  useEffect(() => {
+    const newForm = fields.reduce((acc, field) => {
+      acc[field.name] =
+        initialValues[field.name] ??
+        (field.storeObject ? null : field.defaultValue ?? "");
+      return acc;
+    }, {} as Record<string, any>);
+
+    setForm(newForm);
+  }, [initialValues, fields]);
+
+  // ✅ Auto-compute fields if computeValue is defined
   useEffect(() => {
     const updatedForm = { ...form };
     let changed = false;
@@ -39,11 +46,18 @@ const DynamicForm: React.FC<Props> = ({
     }
   }, [form, fields]);
 
+  // ✅ Handle input/select changes
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const field = fields.find((f) => f.name === name);
+    const isObjectSelect = field?.type === "select" && field?.storeObject;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: isObjectSelect ? JSON.parse(value) : value,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -70,7 +84,6 @@ const DynamicForm: React.FC<Props> = ({
           <div key={colIndex} className="space-y-4">
             {columnFields.map((field) => {
               const value = form[field.name];
-
               return (
                 <div key={field.name} className="relative">
                   <label
@@ -86,7 +99,13 @@ const DynamicForm: React.FC<Props> = ({
                     <select
                       id={field.name}
                       name={field.name}
-                      value={value}
+                      value={
+                        field.storeObject
+                          ? form[field.name]
+                            ? JSON.stringify(form[field.name])
+                            : ""
+                          : form[field.name]
+                      }
                       onChange={handleChange}
                       required={field.required}
                       disabled={field.disabled}
@@ -96,7 +115,20 @@ const DynamicForm: React.FC<Props> = ({
                         Select {field.label}
                       </option>
                       {field.options?.map((option) => (
-                        <option key={option.value} value={option.value}>
+                        <option
+                          key={
+                            field.storeObject
+                              ? (
+                                  option.value as Record<string, any>
+                                )[field.valueKey || "id"]
+                              : option.value
+                          }
+                          value={
+                            field.storeObject
+                              ? JSON.stringify(option.value)
+                              : String(option.value)
+                          }
+                        >
                           {option.label}
                         </option>
                       ))}

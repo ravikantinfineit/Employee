@@ -3,6 +3,7 @@ import React, { useState } from "react";
 interface Column {
   name: string;
   label: string;
+  render?: (row: Record<string, any>) => React.ReactNode;
 }
 interface CustomAction {
   label: string;
@@ -27,7 +28,7 @@ const DynamicTable: React.FC<Props> = ({
   rowsPerPage = 10,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-
+  console.log("data:", data);
   const totalPages = Math.ceil(data.length / rowsPerPage);
   const paginatedData = data.slice(
     (currentPage - 1) * rowsPerPage,
@@ -58,7 +59,7 @@ const DynamicTable: React.FC<Props> = ({
             <tr key={row.id} className="border-t hover:bg-gray-50 transition">
               {columns.map((col) => (
                 <td key={col.name} className="p-2 text-gray-800">
-                  {row[col.name]}
+                  {col.render ? col.render(row) : row[col.name]}
                 </td>
               ))}
               {(onEdit || onDelete) && (

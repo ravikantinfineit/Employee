@@ -1,11 +1,43 @@
-import axios from "axios";
-import {Invoice} from "./Invoice"
+import axios from "axios"; // Change if needed
+
+// export const getInvoices = () =>
+//   axios.get<Invoice[]>(API).then((res) => res.data);
+
+import { Invoice } from "./Invoice";
 
 
-const API = "http://localhost:4000/Invoices"; // Change if needed
+const API = "http://localhost:4000/Invoices";
 
-export const getInvoices = () =>
-  axios.get<Invoice[]>(API).then((res) => res.data);
+// Final returned Invoice has { client: { client_id, name } }
+export const getInvoices = async (): Promise<Invoice[]> => {
+  const [invoicesData, clientsData] = await Promise.all([
+    fetch("http://localhost:4000/Invoices").then((res) => res.json()),
+    fetch("http://localhost:4000/Clients").then((res) => res.json()),
+  ]);
+
+  // Create map of client_id => { client_id, name }
+  const clientMap = clientsData.reduce(
+    (acc: Record<string, { client_id: string; name: string }>, client: any) => {
+      acc[client.client_id] = {
+        client_id: client.client_id,
+        name: client.name,
+      };
+      return acc;
+    },
+    {}
+  );
+
+  // Enrich each invoice with just the client_id + name
+  const enrichedInvoices: Invoice[] = invoicesData.map((invoice: any) => ({
+    ...invoice,
+    client: clientMap[invoice.client_id] || {
+      client_id: invoice.client_id,
+      name: "Unknown",
+    },
+  }));
+  return enrichedInvoices;
+};
+
 
 // Get single invoice by invoice_id (UUID)
 export const getInvoice = (invoice_id: string) =>
