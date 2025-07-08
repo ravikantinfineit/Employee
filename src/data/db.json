@@ -143,9 +143,9 @@
       "due_date": "2025-06-10",
       "billing_address": "sdas",
       "shipping_address": "asd",
-      "subtotal": "15",
-      "tax": "11",
-      "total": 26,
+      "subtotal": 175,
+      "tax": "200",
+      "total": 375,
       "status": "UNPAID",
       "notes": "asdas",
       "invoice_id": "cf459748-d216-4842-acf1-763a28912168"
@@ -158,7 +158,7 @@
       "due_date": "2025-07-03",
       "billing_address": "sdas",
       "shipping_address": "asd",
-      "subtotal": "754",
+      "subtotal": 754,
       "tax": "8",
       "total": 762,
       "status": "UNPAID",
@@ -181,19 +181,19 @@
       "invoice_id": "d61da57c-ecab-4639-b798-c7aafc97d4c8"
     },
     {
-      "id": "ff33",
-      "total": 786,
-      "invoice_sight": "location",
+      "id": "91d7",
+      "total": 75,
+      "invoice_sight": "location11",
       "client_id": "d83ea2d2-cda0-41fc-9f8f-e8bc325b40e4",
-      "invoice_date": "2025-07-11",
-      "due_date": "2025-07-15",
+      "invoice_date": "2025-07-10",
+      "due_date": "2025-07-22",
       "billing_address": "sdas",
       "shipping_address": "asd",
-      "subtotal": "786",
-      "status": "UNPAID",
+      "subtotal": "75",
+      "tax": "0",
       "notes": "asdas",
-      "invoice_id": "59d1621f-3b19-406c-8858-f68701b88029",
-      "tax": 0
+      "invoice_id": "f0e37922-2a6e-4c3c-babb-b570e83ab9a1",
+      "status": "UNPAID"
     }
   ],
   "Invoice_items": [
@@ -203,9 +203,9 @@
       "invoice_id": "cf459748-d216-4842-acf1-763a28912168",
       "service_id": "81c3bf01-50d9-425a-99fd-d3aaf906ff39",
       "description": "Office cleaning service",
-      "quantity": 1,
+      "quantity": "2",
       "unit_price": 15,
-      "total_price": 15
+      "total_price": 30
     },
     {
       "id": "c3d4",
@@ -213,9 +213,9 @@
       "invoice_id": "f75112be-9052-4be2-8c6c-8215406bfd99",
       "service_id": "81c3bf01-50d9-425a-99fd-d3aaf906ff39",
       "description": "Office cleaning service",
-      "quantity": 1,
+      "quantity": "2",
       "unit_price": 754,
-      "total_price": 754
+      "total_price": 1508
     },
     {
       "id": "80e1",
@@ -238,22 +238,24 @@
       "invoice_item_id": "985af7dc-3319-447c-8146-dc2b3a7f624d"
     }
   ],
-  "Users" :[
+  "Users": [
     {
-      "user_id":"cf459748-d216-4842-acf1-763a28912168",
-      "name":"Ravikant",
-      "email":"ravi@gmail.com",
-      "password":"ravi@123",
-      "role":"ADMIN",
-      "is_active":true
+      "user_id": "cf459748-d216-4842-acf1-763a28912168",
+      "name": "Ravikant",
+      "email": "ravi@gmail.com",
+      "password": "ravi@123",
+      "role": "ADMIN",
+      "is_active": true,
+      "id": "1742"
     },
     {
-      "user_id":"cf459748-d216-4842-acf1-763a28912169",
-      "name":"Ravikant",
-      "email":"admin@example.com",
-      "password":"password",
-      "role":"ADMIN",
-      "is_active":true
+      "user_id": "cf459748-d216-4842-acf1-763a28912169",
+      "name": "Ravikant",
+      "email": "admin@example.com",
+      "password": "password",
+      "role": "ADMIN",
+      "is_active": true,
+      "id": "0667"
     }
   ]
 }

@@ -74,7 +74,6 @@ const InvoiceItemFormPage: React.FC<Props> = ({
 
   // ✅ Auto-fill rate when service is selected
   const handleFieldChange = (fieldName: string, value: any) => {
-    debugger;
     if (fieldName === "service_id") {
       const selectedService = services.find(
         (service) => service.service_id === value
