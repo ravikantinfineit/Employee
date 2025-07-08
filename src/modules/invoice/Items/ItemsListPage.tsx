@@ -19,6 +19,7 @@ const InvoicesItemsListPage: React.FC = () => {
 
   useEffect(() => {
     loadServicesAndInvoices();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state]);
 
   const loadServicesAndInvoices = async () => {
