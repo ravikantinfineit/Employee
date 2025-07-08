@@ -12,6 +12,7 @@ import InvoiceFormPage from "./InvoiceFormPage";
 
 const InvoicesListPage: React.FC = () => {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [clientsMap, setClientsMap] = useState<Record<string, Client>>({});
   const [modalOpen, setModalOpen] = useState(false);
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
@@ -102,7 +103,7 @@ const InvoicesListPage: React.FC = () => {
           {
             label: "View",
             colorClass: "bg-indigo-500",
-            onClick: (item) => navigate("/dashboard/invoices/items", { state: item }),
+            onClick: (item) => navigate("/dashboard/invoices/items", { state: { invoice_details: item }, }),
           },
           {
             label: "Download",

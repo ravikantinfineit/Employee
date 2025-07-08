@@ -2,19 +2,20 @@ import React, { useEffect, useState } from "react";
 import { InvoiceItem, invoiceItemTableColumns } from "./Items";
 import { getInvoiceItems, deleteInvoiceItem } from "./ItemsApis";
 import { getServices } from "../../Services/ServiceApi"; // Adjust path to your Units API
-import { Service } from "../../Services/Services"; 
+import { Service } from "../../Services/Services";
 import DynamicTable from "../../../components/DynamicTable";
 import Modal from "../../../components/Modal";
 import InvoiceItemFormPage from "./ItemsFormPages";
-import { useLocation, } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const InvoicesItemsListPage: React.FC = () => {
   const [invoicesItems, setInvoicesItems] = useState<InvoiceItem[]>([]);
   const [servicesMap, setServicesMap] = useState<Record<string, string>>({});
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingInvoiceItem, setEditingInvoiceItem] = useState<InvoiceItem | null>(null);
+  const [editingInvoiceItem, setEditingInvoiceItem] =
+    useState<InvoiceItem | null>(null);
   const location = useLocation();
-
+  const { client,invoice_id, invoice_sight } = location.state.invoice_details || {};
 
   useEffect(() => {
     loadServicesAndInvoices();
@@ -22,7 +23,7 @@ const InvoicesItemsListPage: React.FC = () => {
 
   const loadServicesAndInvoices = async () => {
     const [invoicesData, servicesData] = await Promise.all([
-      getInvoiceItems(),
+      getInvoiceItems(invoice_id),
       getServices(),
     ]);
 
@@ -73,12 +74,27 @@ const InvoicesItemsListPage: React.FC = () => {
     setModalOpen(false);
     await loadServicesAndInvoices();
   };
-  
 
   return (
     <div className="p-6 bg-white shadow rounded-lg">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Service List</h2>
+      {/* Top Title */}
+      <h2 className="text-2xl font-bold mb-2">Service List</h2>
+
+      {/* Header Info and Add Button */}
+      <div className="flex justify-between items-start mb-6">
+        {/* Left: Client Name and Site */}
+        <div className="space-y-1">
+          <div className="text-m text-gray-600">
+            <span className="font-semibold">Client:</span>{" "}
+            {client?.name || "N/A"}
+          </div>
+          <div className="text-m text-gray-600">
+            <span className="font-semibold">Invoice Site:</span>{" "}
+            {invoice_sight || "N/A"}
+          </div>
+        </div>
+
+        {/* Right: Add Invoice Button */}
         <button
           onClick={handleAdd}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
@@ -96,9 +112,19 @@ const InvoicesItemsListPage: React.FC = () => {
 
       {modalOpen && (
         <Modal onClose={() => setModalOpen(false)}>
-          <InvoiceItemFormPage
+          {/* <InvoiceItemFormPage
             key={editingInvoiceItem?.invoice_item_id || "new"}
             initialValues={editingInvoiceItem || {}}
+            onClose={() => setModalOpen(false)}
+            onSuccess={handleFormSubmit}
+          /> */}
+          <InvoiceItemFormPage
+            key={editingInvoiceItem?.invoice_item_id || "new"}
+            initialValues={{
+                ...location.state, // ✅ This gives client, invoice_id, invoice_sight
+              ...editingInvoiceItem,
+              //invoice_id: invoice_id, // ✅ Inject invoice_id into form
+            }}
             onClose={() => setModalOpen(false)}
             onSuccess={handleFormSubmit}
           />

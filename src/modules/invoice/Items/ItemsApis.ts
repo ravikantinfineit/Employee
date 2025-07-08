@@ -4,9 +4,12 @@ import {InvoiceItem} from "./Items"
 
 const API = "http://localhost:4000/Invoice_items"; // Change if needed
 
-export const getInvoiceItems = () =>
-  axios.get<InvoiceItem[]>(API).then((res) => res.data);
-
+// export const getInvoiceItems = (invoice_id:string) =>
+//   axios.get<InvoiceItem[]>(API).then((res) => res.data);
+export const getInvoiceItems = (invoice_id: string) =>
+  axios
+    .get<InvoiceItem[]>(`${API}?invoice_id=${invoice_id}`)
+    .then((res) => res.data);
 // Get single invoice by invoice_item_id (UUID)
 export const getInvoiceItem = (invoice_item_id: string) =>
   axios.get<InvoiceItem[]>(`${API}?invoice_item_id=${invoice_item_id}`).then((res) => res.data[0]);

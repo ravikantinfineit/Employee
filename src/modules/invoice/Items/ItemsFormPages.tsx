@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import DynamicForm from "../../../components/DynamicForm";
-import { getInvoiceItem, createInvoiceItem, updateInvoiceItem } from "./ItemsApis";
+import {
+  getInvoiceItem,
+  createInvoiceItem,
+  updateInvoiceItem,
+} from "./ItemsApis";
 import { invoiceItemFields, InvoiceItem } from "./Items";
 import { getServices } from "../../Services/ServiceApi"; // Adjust path to your Units API
 import { Service } from "../../Services/Services"; // Adjust path to your Unit interface
@@ -20,11 +24,13 @@ const InvoiceItemFormPage: React.FC<Props> = ({
 }) => {
   const { invoice_id } = useParams<{ invoice_id: string }>();
   const navigate = useNavigate();
-
-  const [formValues, setFormValues] = useState<Partial<InvoiceItem>>(initialValues);
+  const location = useLocation();
+  const contextState = location.state || {};
+  const [formValues, setFormValues] =
+    useState<Partial<InvoiceItem>>(initialValues);
   const [fields, setFields] = useState<FieldConfig[]>(invoiceItemFields);
   const [loading, setLoading] = useState(!!invoice_id);
-
+  debugger;
   const isEditFromRoute = !!invoice_id && !initialValues?.invoice_item_id;
 
   useEffect(() => {
@@ -41,7 +47,11 @@ const InvoiceItemFormPage: React.FC<Props> = ({
 
       const updatedFields = invoiceItemFields.map((field) =>
         field.name === "service_id"
-          ? ({ ...field, type: "select", options: serviceOptions } as FieldConfig)
+          ? ({
+              ...field,
+              type: "select",
+              options: serviceOptions,
+            } as FieldConfig)
           : field
       );
 
@@ -61,22 +71,26 @@ const InvoiceItemFormPage: React.FC<Props> = ({
   }, [invoice_id, initialValues, isEditFromRoute]);
 
   const handleSubmit = async (formData: Record<string, any>) => {
+    debugger;
     const invoiceData = formData as Omit<InvoiceItem, "invoice_item_id">;
 
     if (invoice_id) {
       await updateInvoiceItem(invoice_id, invoiceData);
-    } else if (initialValues?.invoice_item_id) {
-      await updateInvoiceItem(initialValues.invoice_item_id as string, invoiceData);
+    } else if (initialValues?.id) {
+      await updateInvoiceItem(initialValues.id as string, invoiceData);
     } else {
+      debugger;
+      invoiceData.invoice_id=contextState.invoice_details.invoice_id;
       const newInvoiceItem = await createInvoiceItem(invoiceData);
       onSuccess?.(newInvoiceItem.data);
     }
 
     onClose?.();
     if (onClose) {
-      navigate("/invoices/items", {
+      navigate("/dashboard/invoices/items", {
         replace: true,
-        state: { refresh: true },
+        state: { 
+           ...contextState,refresh: true },
       });
     }
   };

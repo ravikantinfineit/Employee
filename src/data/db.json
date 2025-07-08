@@ -216,6 +216,26 @@
       "quantity": 1,
       "unit_price": 754,
       "total_price": 754
+    },
+    {
+      "id": "80e1",
+      "service_id": "81c3bf01-50d9-425a-99fd-d3aaf906ff39",
+      "description": "Office cleaning service",
+      "quantity": 1,
+      "unit_price": "47",
+      "total_price": 47,
+      "invoice_id": "cf459748-d216-4842-acf1-763a28912168",
+      "invoice_item_id": "c2bdce32-15d4-4310-bdfe-b44c329ff97d"
+    },
+    {
+      "id": "1f8a",
+      "service_id": "81c3bf01-50d9-425a-99fd-d3aaf906ff39",
+      "description": "Merter Square",
+      "quantity": 1,
+      "unit_price": "98",
+      "total_price": 98,
+      "invoice_id": "cf459748-d216-4842-acf1-763a28912168",
+      "invoice_item_id": "985af7dc-3319-447c-8146-dc2b3a7f624d"
     }
   ]
 }
