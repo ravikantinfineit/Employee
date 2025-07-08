@@ -6,13 +6,13 @@ import axios from "axios"; // Change if needed
 import { Invoice } from "./Invoice";
 
 
-const API = "http://localhost:4000/Invoices";
+const API = `${process.env.REACT_APP_API_URL}/Invoices`;
 
 // Final returned Invoice has { client: { client_id, name } }
 export const getInvoices = async (): Promise<Invoice[]> => {
   const [invoicesData, clientsData] = await Promise.all([
-    fetch("http://localhost:4000/Invoices").then((res) => res.json()),
-    fetch("http://localhost:4000/Clients").then((res) => res.json()),
+    fetch(`${process.env.REACT_APP_API_URL}/Invoices`).then((res) => res.json()),
+    fetch(`${process.env.REACT_APP_API_URL}/Clients`).then((res) => res.json()),
   ]);
 
   // Create map of client_id => { client_id, name }

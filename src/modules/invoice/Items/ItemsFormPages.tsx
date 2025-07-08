@@ -7,8 +7,8 @@ import {
   updateInvoiceItem,
 } from "./ItemsApis";
 import { invoiceItemFields, InvoiceItem } from "./Items";
-import { getServices } from "../../Services/ServiceApi"; // Adjust path to your Units API
-import { Service } from "../../Services/Services"; // Adjust path to your Unit interface
+import { getServices } from "../../Services/ServiceApi";
+import { Service } from "../../Services/Services";
 import { FieldConfig } from "../../../types/FieldConfig";
 
 interface Props {
@@ -26,19 +26,22 @@ const InvoiceItemFormPage: React.FC<Props> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const contextState = location.state || {};
+
   const [formValues, setFormValues] =
     useState<Partial<InvoiceItem>>(initialValues);
   const [fields, setFields] = useState<FieldConfig[]>(invoiceItemFields);
+  const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(!!invoice_id);
   const isEditFromRoute = !!invoice_id && !initialValues?.invoice_item_id;
 
   useEffect(() => {
     const loadForm = async () => {
-      const services = await getServices();
+      const servicesData = await getServices();
+      setServices(servicesData); // ✅ Save services to state
 
       const serviceOptions = [
         { label: "Select Service", value: "" },
-        ...services.map((service: Service) => ({
+        ...servicesData.map((service: Service) => ({
           label: service.service_name,
           value: service.service_id,
         })),
@@ -46,11 +49,11 @@ const InvoiceItemFormPage: React.FC<Props> = ({
 
       const updatedFields = invoiceItemFields.map((field) =>
         field.name === "service_id"
-          ? ({
+          ? {
               ...field,
-              type: "select",
+              type: "select" as "select",
               options: serviceOptions,
-            } as FieldConfig)
+            }
           : field
       );
 
@@ -69,6 +72,34 @@ const InvoiceItemFormPage: React.FC<Props> = ({
     loadForm();
   }, [invoice_id, initialValues, isEditFromRoute]);
 
+  // ✅ Auto-fill rate when service is selected
+  const handleFieldChange = (fieldName: string, value: any) => {
+    debugger;
+    if (fieldName === "service_id") {
+      const selectedService = services.find(
+        (service) => service.service_id === value
+      );
+      const rate = selectedService?.price || 0;
+      if (selectedService) {
+        setFormValues((prev) => ({
+          ...prev,
+          service_id: value,
+          unit_price: rate // auto-fill rate
+        }));
+      } else {
+        setFormValues((prev) => ({
+          ...prev,
+          service_id: value,
+        }));
+      }
+    } else {
+      setFormValues((prev) => ({
+        ...prev,
+        [fieldName]: value,
+      }));
+    }
+  };
+
   const handleSubmit = async (formData: Record<string, any>) => {
     const invoiceData = formData as Omit<InvoiceItem, "invoice_item_id">;
 
@@ -77,8 +108,7 @@ const InvoiceItemFormPage: React.FC<Props> = ({
     } else if (initialValues?.id) {
       await updateInvoiceItem(initialValues.id as string, invoiceData);
     } else {
-
-      invoiceData.invoice_id=contextState.invoice_details.invoice_id;
+      invoiceData.invoice_id = contextState.invoice_details.invoice_id;
       const newInvoiceItem = await createInvoiceItem(invoiceData);
       onSuccess?.(newInvoiceItem.data);
     }
@@ -87,8 +117,7 @@ const InvoiceItemFormPage: React.FC<Props> = ({
     if (onClose) {
       navigate("/dashboard/invoices/items", {
         replace: true,
-        state: { 
-           ...contextState,refresh: true },
+        state: { ...contextState, refresh: true },
       });
     }
   };
@@ -104,6 +133,7 @@ const InvoiceItemFormPage: React.FC<Props> = ({
         fields={fields}
         initialValues={formValues}
         onSubmit={handleSubmit}
+        onChange={handleFieldChange} // ✅ Add this
       />
     </div>
   );

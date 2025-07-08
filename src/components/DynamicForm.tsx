@@ -5,12 +5,14 @@ interface Props {
   fields: FieldConfig[];
   initialValues?: Record<string, any>;
   onSubmit: (data: Record<string, any>) => void;
+  onChange?: (name: string, value: any) => void; // ✅ Add this line // ✅ New prop
 }
 
 const DynamicForm: React.FC<Props> = ({
   fields,
   initialValues = {},
   onSubmit,
+  onChange,
 }) => {
   const [form, setForm] = useState<Record<string, any>>({});
 
@@ -54,11 +56,31 @@ const DynamicForm: React.FC<Props> = ({
     const field = fields.find((f) => f.name === name);
     const isObjectSelect = field?.type === "select" && field?.storeObject;
 
+    const parsedValue = isObjectSelect ? JSON.parse(value) : value;
+
     setForm((prev) => ({
       ...prev,
-      [name]: isObjectSelect ? JSON.parse(value) : value,
+      [name]: parsedValue,
     }));
+
+    // ✅ Fire onChange callback to parent
+    if (typeof onChange === "function") {
+      onChange(name, parsedValue);
+    }
   };
+
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  // ) => {
+  //   const { name, value } = e.target;
+  //   const field = fields.find((f) => f.name === name);
+  //   const isObjectSelect = field?.type === "select" && field?.storeObject;
+
+  //   setForm((prev) => ({
+  //     ...prev,
+  //     [name]: isObjectSelect ? JSON.parse(value) : value,
+  //   }));
+  // };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,9 +140,9 @@ const DynamicForm: React.FC<Props> = ({
                         <option
                           key={
                             field.storeObject
-                              ? (
-                                  option.value as Record<string, any>
-                                )[field.valueKey || "id"]
+                              ? (option.value as Record<string, any>)[
+                                  field.valueKey || "id"
+                                ]
                               : option.value
                           }
                           value={

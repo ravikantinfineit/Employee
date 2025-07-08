@@ -2,7 +2,7 @@ import axios from "axios";
 import {InvoiceItem} from "./Items"
 
 
-const API = "http://localhost:4000/Invoice_items"; // Change if needed
+const API = `${process.env.REACT_APP_API_URL}/Invoice_items`; // Change if needed
 
 // export const getInvoiceItems = (invoice_id:string) =>
 //   axios.get<InvoiceItem[]>(API).then((res) => res.data);

@@ -16,7 +16,7 @@ export const invoiceItemFields: FieldConfig[] = [
   { name: "service_id", label: "Service", type: "select", required: true }, // to populate dynamically
   { name: "description", label: "Description", type: "text", required: true },
   { name: "quantity", label: "Quantity", type: "number", required: true, defaultValue: 1 },
-  { name: "unit_price", label: "Unit Price", type: "number", required: true, defaultValue: 0 },
+  { name: "unit_price", label: "Unit Price", type: "number", required: true,disabled: true, defaultValue: 0 },
   {
     name: "total_price",
     label: "Total Price",

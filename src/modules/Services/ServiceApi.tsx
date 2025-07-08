@@ -2,7 +2,7 @@ import axios from "axios";
 import {Service} from "./Services"
 
 
-const API = "http://localhost:4000/Services"; // Change if needed
+const API = `${process.env.REACT_APP_API_URL}/Services`; // Change if needed
 
 export const getServices = () =>
   axios.get<Service[]>(API).then((res) => res.data);

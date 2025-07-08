@@ -15,11 +15,12 @@ const InvoicesItemsListPage: React.FC = () => {
   const [editingInvoiceItem, setEditingInvoiceItem] =
     useState<InvoiceItem | null>(null);
   const location = useLocation();
-  const { client,invoice_id, invoice_sight } = location.state.invoice_details || {};
+  const { client, invoice_id, invoice_sight } =
+    location.state.invoice_details || {};
 
   useEffect(() => {
     loadServicesAndInvoices();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state]);
 
   const loadServicesAndInvoices = async () => {
@@ -75,7 +76,14 @@ const InvoicesItemsListPage: React.FC = () => {
     setModalOpen(false);
     await loadServicesAndInvoices();
   };
-
+const totalAmount = invoicesItems.reduce((sum, item) => {
+      const total = parseFloat(
+        item.total_price !== undefined && item.total_price !== null
+          ? String(item.total_price)
+          : "0"
+      );
+      return sum + (isNaN(total) ? 0 : total);
+    }, 0);
   return (
     <div className="p-6 bg-white shadow rounded-lg">
       {/* Top Title */}
@@ -122,7 +130,7 @@ const InvoicesItemsListPage: React.FC = () => {
           <InvoiceItemFormPage
             key={editingInvoiceItem?.invoice_item_id || "new"}
             initialValues={{
-                ...location.state, // ✅ This gives client, invoice_id, invoice_sight
+              ...location.state, // ✅ This gives client, invoice_id, invoice_sight
               ...editingInvoiceItem,
               //invoice_id: invoice_id, // ✅ Inject invoice_id into form
             }}
@@ -131,6 +139,11 @@ const InvoicesItemsListPage: React.FC = () => {
           />
         </Modal>
       )}
+       <div className="space-y-1 mt-6">
+          <div className="text-m text-black-600">
+           <h3 className="text-1xl font-bold mb-2"> Grand Total : {totalAmount || "N/A"}</h3>
+          </div>
+        </div>
     </div>
   );
 };
