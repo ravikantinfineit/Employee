@@ -133,5 +133,109 @@
       "pan_number": "FGHIJ5678K",
       "id": "ac10"
     }
+  ],
+  "Invoices": [
+    {
+      "id": "b72e",
+      "invoice_sight": "location",
+      "client_id": "4e218b1b-b648-4d7f-a62b-e452becefa64",
+      "invoice_date": "2025-06-12",
+      "due_date": "2025-06-10",
+      "billing_address": "sdas",
+      "shipping_address": "asd",
+      "subtotal": "15",
+      "tax": "11",
+      "total": 26,
+      "status": "UNPAID",
+      "notes": "asdas",
+      "invoice_id": "cf459748-d216-4842-acf1-763a28912168"
+    },
+    {
+      "id": "9776",
+      "invoice_sight": "ee",
+      "client_id": "c9f58b1e-8d91-4baf-a90d-f312e91d3a01",
+      "invoice_date": "2025-06-12",
+      "due_date": "2025-07-03",
+      "billing_address": "sdas",
+      "shipping_address": "asd",
+      "subtotal": "754",
+      "tax": "8",
+      "total": 762,
+      "status": "UNPAID",
+      "notes": "gh",
+      "invoice_id": "f75112be-9052-4be2-8c6c-8215406bfd99"
+    },
+    {
+      "id": "ef9e",
+      "invoice_sight": "location",
+      "client_id": "c9f58b1e-8d91-4baf-a90d-f312e91d3a01",
+      "invoice_date": "2025-07-03",
+      "due_date": "2025-07-08",
+      "billing_address": "sdas",
+      "shipping_address": "asd",
+      "subtotal": "7",
+      "tax": 0,
+      "total": 7,
+      "status": "UNPAID",
+      "notes": "asdas",
+      "invoice_id": "d61da57c-ecab-4639-b798-c7aafc97d4c8"
+    },
+    {
+      "id": "ff33",
+      "total": 786,
+      "invoice_sight": "location",
+      "client_id": "d83ea2d2-cda0-41fc-9f8f-e8bc325b40e4",
+      "invoice_date": "2025-07-11",
+      "due_date": "2025-07-15",
+      "billing_address": "sdas",
+      "shipping_address": "asd",
+      "subtotal": "786",
+      "status": "UNPAID",
+      "notes": "asdas",
+      "invoice_id": "59d1621f-3b19-406c-8858-f68701b88029",
+      "tax": 0
+    }
+  ],
+  "Invoice_items": [
+    {
+      "id": "a1b2",
+      "Invoice_item_id": "cf459748-d216-4842-acf1-763a28912167",
+      "invoice_id": "cf459748-d216-4842-acf1-763a28912168",
+      "service_id": "81c3bf01-50d9-425a-99fd-d3aaf906ff39",
+      "description": "Office cleaning service",
+      "quantity": 1,
+      "unit_price": 15,
+      "total_price": 15
+    },
+    {
+      "id": "c3d4",
+      "Invoice_item_id": "f75112be-9052-4be2-8c6c-8215406bfd98",
+      "invoice_id": "f75112be-9052-4be2-8c6c-8215406bfd99",
+      "service_id": "81c3bf01-50d9-425a-99fd-d3aaf906ff39",
+      "description": "Office cleaning service",
+      "quantity": 1,
+      "unit_price": 754,
+      "total_price": 754
+    },
+    {
+      "id": "80e1",
+      "service_id": "81c3bf01-50d9-425a-99fd-d3aaf906ff39",
+      "description": "Office cleaning service",
+      "quantity": 1,
+      "unit_price": "47",
+      "total_price": 47,
+      "invoice_id": "cf459748-d216-4842-acf1-763a28912168",
+      "invoice_item_id": "c2bdce32-15d4-4310-bdfe-b44c329ff97d"
+    },
+    {
+      "id": "1f8a",
+      "service_id": "81c3bf01-50d9-425a-99fd-d3aaf906ff39",
+      "description": "Merter Square",
+      "quantity": 1,
+      "unit_price": "98",
+      "total_price": 98,
+      "invoice_id": "cf459748-d216-4842-acf1-763a28912168",
+      "invoice_item_id": "985af7dc-3319-447c-8146-dc2b3a7f624d"
+    }
   ]
 }

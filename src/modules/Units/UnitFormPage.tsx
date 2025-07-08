@@ -45,7 +45,6 @@ const UnitFormPage: React.FC<Props> = ({
       const newUnit = await createUnit(unitData);
       onSuccess?.(newUnit.data);
     }
-    debugger;
     onClose?.();
     if (onClose) {
       navigate("/dashboard/units", {

@@ -45,9 +45,9 @@ const EmployeesListPage: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-white shadow rounded-lg">
+    <div className="p-6 bg-gray-700 shadow rounded-lg">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Employee List</h2>
+        <h2 className="text-white text-2xl font-bold">Employee List</h2>
         <button
           onClick={handleAdd}
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
@@ -55,13 +55,15 @@ const EmployeesListPage: React.FC = () => {
           + Add Employee
         </button>
       </div>
-
-      <DynamicTable
+      <div className="p-6 bg-white shadow rounded-lg">
+         <DynamicTable
         columns={employeeTableColumns}
         data={employees}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
+      </div>
+     
 
       {modalOpen && (
         <Modal onClose={() => setModalOpen(false)}>

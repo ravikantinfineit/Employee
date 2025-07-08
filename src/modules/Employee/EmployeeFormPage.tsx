@@ -46,7 +46,6 @@ const EmployeeFormPage: React.FC<Props> = ({
       const newEmp = await createEmployee(employeeData);
       onSuccess?.(newEmp.data);
     }
-    debugger;
     onClose?.();
     if (onClose) {
       navigate("/dashboard/employees", {
