@@ -30,7 +30,6 @@ const InvoiceItemFormPage: React.FC<Props> = ({
     useState<Partial<InvoiceItem>>(initialValues);
   const [fields, setFields] = useState<FieldConfig[]>(invoiceItemFields);
   const [loading, setLoading] = useState(!!invoice_id);
-  debugger;
   const isEditFromRoute = !!invoice_id && !initialValues?.invoice_item_id;
 
   useEffect(() => {
@@ -71,7 +70,6 @@ const InvoiceItemFormPage: React.FC<Props> = ({
   }, [invoice_id, initialValues, isEditFromRoute]);
 
   const handleSubmit = async (formData: Record<string, any>) => {
-    debugger;
     const invoiceData = formData as Omit<InvoiceItem, "invoice_item_id">;
 
     if (invoice_id) {
@@ -79,7 +77,7 @@ const InvoiceItemFormPage: React.FC<Props> = ({
     } else if (initialValues?.id) {
       await updateInvoiceItem(initialValues.id as string, invoiceData);
     } else {
-      debugger;
+
       invoiceData.invoice_id=contextState.invoice_details.invoice_id;
       const newInvoiceItem = await createInvoiceItem(invoiceData);
       onSuccess?.(newInvoiceItem.data);

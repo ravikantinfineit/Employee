@@ -45,7 +45,6 @@ const ClientFormPage: React.FC<Props> = ({
       const newClient = await createClient(clientData);
       onSuccess?.(newClient.data);
     }
-    debugger;
     onClose?.();
     if (onClose) {
       navigate("/dashboard/clients", {
