@@ -3,7 +3,7 @@ import LandingPage from "./modules/LandingPage";
 import LoginPage from "./modules/LoginPage";
 import Dashboard from "./modules/Dashboard";
 import EmployeesListPage from "./modules/Employee/EmployeesListPage";
-import EmployeeFormPage from "./modules/Employee/EmployeeFormPage";
+//import EmployeeFormPage from "./modules/Employee/EmployeeFormPage";
 import PrivateRoute from "./components/PrivateRoute";
 import UnitsListPage from "./modules/Units/UnitsListPage";
 import ServicesListPage from "./modules/Services/ServiceListPage";
@@ -24,8 +24,8 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />}>
             <Route index element={<Navigate to="employees" />} />
             <Route path="employees" element={<EmployeesListPage />} />
-            <Route path="employees/add" element={<EmployeeFormPage />} />
-            <Route path="employees/edit/:id" element={<EmployeeFormPage />} />
+            {/* <Route path="employees/add" element={<EmployeeFormPage />} />
+            <Route path="employees/edit/:id" element={<EmployeeFormPage />} /> */}
             <Route path="units" element={<UnitsListPage />} />
             <Route path="services" element={<ServicesListPage />} />
             <Route path="clients" element={<ClientsListPage />} />

@@ -3,12 +3,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { Invoice, invoiceTableColumns } from "./Invoice";
 import { getInvoices, deleteInvoice } from "./InvoiceApi";
-import { getClients } from "../Clients/ClientApi";
+import { getClient, getClients } from "../Clients/ClientApi";
 import { Client } from "../Clients/Clients";
 
 import DynamicTable from "../../components/DynamicTable";
 import Modal from "../../components/Modal";
 import InvoiceFormPage from "./InvoiceFormPage";
+import { generateInvoicePDF } from "../../utils/generateInvoicePdf";
+import { getInvoiceItems } from "./Items/ItemsApis";
+//import { generateInvoicePDF } from "../../generateInvoicePdf";
 
 const InvoicesListPage: React.FC = () => {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -26,10 +29,13 @@ const InvoicesListPage: React.FC = () => {
       getClients(),
     ]);
 
-    const clientMap = clientsData.reduce<Record<string, Client>>((acc, client) => {
-      acc[client.client_id] = client;
-      return acc;
-    }, {});
+    const clientMap = clientsData.reduce<Record<string, Client>>(
+      (acc, client) => {
+        acc[client.client_id] = client;
+        return acc;
+      },
+      {}
+    );
 
     setClientsMap(clientMap);
 
@@ -54,12 +60,39 @@ const InvoicesListPage: React.FC = () => {
       await loadData();
     }
   };
+  const handleDownload = async (invoice: any) => {
+    debugger;
+    const {
+      invoice_id,
+      client_id,
+      invoice_date,
+      billing_address,
+      tax,
+      invoice_sight,
+    } = invoice;
+    const items = await getInvoiceItems(invoice_id);
+    const clent = await getClient(client_id);
+    generateInvoicePDF({
+      invoiceId: invoice_sight,
+      clientName: clent.name,
+      clientAddress: clent.address,
+      companyName: "Company Name",
+      companyAddress: "123 Business Street\nCity, State 12345",
+      taxRate: Number(tax),
+      items: items.map((item) => ({
+      description: item.description,
+      quantity: Number(item.quantity),
+      unit_price: Number(item.unit_price),
+      total: Number(item.total_price),
+    })),
+    });
+  };
 
   const handleEdit = (row: Record<string, any>) => {
     const invoice = row as Invoice;
     const invoiceToEdit: Invoice = {
       ...invoice,
-      invoice_id: invoice.invoice_id || invoice.id || '',
+      invoice_id: invoice.invoice_id || invoice.id || "",
       client_id: invoice.client?.client_id ?? invoice.client_id,
     };
 
@@ -103,12 +136,15 @@ const InvoicesListPage: React.FC = () => {
           {
             label: "View",
             colorClass: "bg-indigo-500",
-            onClick: (item) => navigate("/dashboard/invoices/items", { state: { invoice_details: item }, }),
+            onClick: (item) =>
+              navigate("/dashboard/invoices/items", {
+                state: { invoice_details: item },
+              }),
           },
           {
             label: "Download",
             colorClass: "bg-yellow-500",
-            onClick: (item) => console.log("Download invoice:", item),
+            onClick: (item) => handleDownload(item),
           },
         ]}
       />
