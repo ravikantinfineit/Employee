@@ -5,6 +5,7 @@ import autoTable from "jspdf-autotable";
 interface InvoiceItem {
   description: string;
   quantity: number;
+  unit:string;
   unit_price: number;
   total: number;
 }
@@ -46,12 +47,13 @@ export const generateInvoicePDF = (data: InvoiceData) => {
   const tableBody = data.items.map((item) => [
     item.description,
     item.quantity,
-    `$${item.unit_price.toFixed(2)}`,
-    `$${item.total.toFixed(2)}`,
+    item.unit,
+    `${item.unit_price.toFixed(2)}`,
+    `${item.total.toFixed(2)}`,
   ]);
 
   autoTable(doc, {
-    head: [["Description", "Quantity / Size", "Unit Price", "Total"]],
+    head: [["Description", "Quantity / Size","Unit", "Unit Price", "Total"]],
     body: tableBody,
     startY: 65,
     theme: "grid",
@@ -69,16 +71,16 @@ export const generateInvoicePDF = (data: InvoiceData) => {
   const finalY = (doc as any).lastAutoTable?.finalY || 80;
 
   doc.text(`Subtotal`, 150, finalY + 10, { align: "right" });
-  doc.text(`$${subtotal.toFixed(2)}`, 200, finalY + 10, { align: "right" });
+  doc.text(`${subtotal.toFixed(2)}`, 190, finalY + 10, { align: "right" });
 
   doc.text(`Tax`, 150, finalY + 16, {
     align: "right",
   });
-  doc.text(`$${tax.toFixed(2)}`, 200, finalY + 16, { align: "right" });
+  doc.text(`${tax.toFixed(2)}`, 190, finalY + 16, { align: "right" });
 
   doc.setFont("helvetica", "bold");
   doc.text(`Total`, 150, finalY + 24, { align: "right" });
-  doc.text(`$${total.toFixed(2)}`, 200, finalY + 24, { align: "right" });
+  doc.text(`${total.toFixed(2)}`, 190, finalY + 24, { align: "right" });
 
   // Save
   doc.save(`Invoice_${data.invoiceId}.pdf`);

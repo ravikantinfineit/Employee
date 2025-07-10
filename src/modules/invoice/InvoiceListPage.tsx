@@ -10,7 +10,7 @@ import DynamicTable from "../../components/DynamicTable";
 import Modal from "../../components/Modal";
 import InvoiceFormPage from "./InvoiceFormPage";
 import { generateInvoicePDF } from "../../utils/generateInvoicePdf";
-import { getInvoiceItems } from "./Items/ItemsApis";
+import { getEnrichedInvoiceItems } from "./Items/ItemsApis";
 //import { generateInvoicePDF } from "../../generateInvoicePdf";
 
 const InvoicesListPage: React.FC = () => {
@@ -65,13 +65,12 @@ const InvoicesListPage: React.FC = () => {
     const {
       invoice_id,
       client_id,
-      invoice_date,
-      billing_address,
       tax,
       invoice_sight,
     } = invoice;
-    const items = await getInvoiceItems(invoice_id);
     const clent = await getClient(client_id);
+    const items = await getEnrichedInvoiceItems(invoice_id);
+    
     generateInvoicePDF({
       invoiceId: invoice_sight,
       clientName: clent.name,
@@ -82,6 +81,7 @@ const InvoicesListPage: React.FC = () => {
       items: items.map((item) => ({
       description: item.description,
       quantity: Number(item.quantity),
+      unit:item.unit_name,
       unit_price: Number(item.unit_price),
       total: Number(item.total_price),
     })),
