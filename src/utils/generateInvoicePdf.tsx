@@ -58,7 +58,7 @@ export const generateInvoicePDF = (data: InvoiceData) => {
     startY: 65,
     theme: "grid",
     styles: { halign: "left" },
-    headStyles: { fillColor: [220, 220, 220] },
+    headStyles: { fillColor: [55, 65, 81] },
   });
 
   // Totals
